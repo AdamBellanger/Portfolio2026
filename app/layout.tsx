@@ -38,9 +38,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="fr"
-      className={`${clashDisplay.variable} ${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${clashDisplay.variable} ${inter.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-screen flex-col">
         <SmoothScroll />
         <CursorFollower />
         <SiteNav />

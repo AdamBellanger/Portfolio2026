@@ -20,6 +20,11 @@ const timeline = [
     text: "Administration systèmes et réseaux, sécurité, services d'infrastructure, avec des modules de développement web (PHP/MySQL) en parallèle.",
   },
   {
+    place: "Lycée Campus La Châtaigneraie",
+    role: "Bac Pro Systèmes Numériques — 2025",
+    text: "Sept stages en entreprise pendant le bac, dont cinq chez Socacom (téléphonie en atelier, baies de brassage, switchs et routeurs, vidéosurveillance, Centrex), plus AJ Phone (téléphonie fixe et DECT) et Micro-Technique (dépannage informatique chez les clients).",
+  },
+  {
     place: "Homelab — adambellanger.pro",
     role: "Auto-hébergement & auto-formation",
     text: "Un serveur Hetzner géré de A à Z : Docker, reverse proxy, monitoring, automatisation. C'est là que je déploie et fais tourner tous mes projets.",
