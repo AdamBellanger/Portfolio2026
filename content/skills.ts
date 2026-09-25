@@ -25,11 +25,15 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    title: "Infra & DevOps",
-    description: "Mon serveur de production, géré de A à Z.",
+    title: "Systèmes, Cloud & DevOps",
+    description: "Serveurs Windows et Linux, cloud, et mon infra de production.",
     items: [
       "Linux (Ubuntu)",
+      "Windows Server",
+      "Active Directory",
       "Docker & Compose",
+      "Scaleway",
+      "HAProxy",
       "Nginx Proxy Manager",
       "WireGuard",
       "Fail2Ban",
