@@ -1,81 +1,107 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 
+type Mode = "default" | "link" | "label" | "text";
+
+const SIZE: Record<Mode, string> = {
+  default: "h-3 w-3 rounded-full",
+  link: "h-12 w-12 rounded-full",
+  label: "h-24 w-24 rounded-full",
+  text: "h-7 w-[3px] rounded-sm",
+};
+
+/**
+ * Single contextual cursor. Inverts colours (mix-blend-difference) so it reads
+ * on both dark and light sections; grows over links, shows a label over
+ * elements carrying data-cursor="…", "↗" over external links, and becomes a
+ * caret in text fields. Fine pointers only, off for reduced motion.
+ */
 export function CursorFollower() {
   const reducedMotion = useReducedMotion();
-  const [hovering, setHovering] = useState(false);
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const [mode, setMode] = useState<Mode>("default");
+  const [label, setLabel] = useState("");
+  const [pressed, setPressed] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const current = useRef({ mode: "default" as Mode, label: "" });
 
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
-  const ringX = useSpring(x, { stiffness: 300, damping: 30, mass: 0.4 });
-  const ringY = useSpring(y, { stiffness: 300, damping: 30, mass: 0.4 });
+  const springX = useSpring(x, { stiffness: 500, damping: 40, mass: 0.3 });
+  const springY = useSpring(y, { stiffness: 500, damping: 40, mass: 0.3 });
 
   useEffect(() => {
     if (reducedMotion) return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
-    dotRef.current?.style.setProperty("opacity", "1");
-    ringRef.current?.style.setProperty("opacity", "1");
     document.documentElement.classList.add("cursor-none");
 
-    const handleMove = (e: PointerEvent) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
-      const target = e.target as HTMLElement;
-      setHovering(!!target.closest("a, button"));
+    const update = (nextMode: Mode, nextLabel = "") => {
+      if (current.current.mode === nextMode && current.current.label === nextLabel) return;
+      current.current = { mode: nextMode, label: nextLabel };
+      setMode(nextMode);
+      setLabel(nextLabel);
     };
 
+    const handleMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      x.set(e.clientX);
+      y.set(e.clientY);
+      setVisible(true);
+
+      const target = e.target as Element;
+      const labelled = target.closest<HTMLElement>("[data-cursor]");
+      if (labelled) return update("label", labelled.dataset.cursor ?? "");
+      if (target.closest("input:not([type=hidden]), textarea")) return update("text");
+      const anchor = target.closest("a");
+      if (anchor?.target === "_blank") return update("label", "↗");
+      if (target.closest("a, button, [role=button]")) return update("link");
+      update("default");
+    };
+    const handleDown = () => setPressed(true);
+    const handleUp = () => setPressed(false);
+    const handleLeave = () => setVisible(false);
+
     window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerdown", handleDown);
+    window.addEventListener("pointerup", handleUp);
+    document.documentElement.addEventListener("pointerleave", handleLeave);
     return () => {
       window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerdown", handleDown);
+      window.removeEventListener("pointerup", handleUp);
+      document.documentElement.removeEventListener("pointerleave", handleLeave);
       document.documentElement.classList.remove("cursor-none");
     };
   }, [reducedMotion, x, y]);
 
-  useEffect(() => {
-    const dot = dotRef.current;
-    if (!dot) return;
-    const update = () => {
-      dot.style.transform = `translate(${x.get()}px, ${y.get()}px) translate(-50%, -50%)`;
-    };
-    const unsubX = x.on("change", update);
-    const unsubY = y.on("change", update);
-    return () => {
-      unsubX();
-      unsubY();
-    };
-  }, [x, y]);
+  if (reducedMotion) return null;
 
-  useEffect(() => {
-    const ring = ringRef.current;
-    if (!ring) return;
-    const scale = hovering ? 1.8 : 1;
-    const update = () => {
-      ring.style.transform = `translate(${ringX.get()}px, ${ringY.get()}px) translate(-50%, -50%) scale(${scale})`;
-    };
-    const unsubX = ringX.on("change", update);
-    const unsubY = ringY.on("change", update);
-    update();
-    return () => {
-      unsubX();
-      unsubY();
-    };
-  }, [ringX, ringY, hovering]);
+  const isLabel = mode === "label";
+  const isArrow = isLabel && label === "↗";
 
   return (
-    <>
+    <motion.div
+      aria-hidden="true"
+      style={{ x: springX, y: springY }}
+      className={`pointer-events-none fixed left-0 top-0 z-[100] ${isLabel ? "" : "mix-blend-difference"}`}
+    >
       <div
-        ref={dotRef}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-2 w-2 rounded-full bg-accent opacity-0 transition-opacity duration-200"
-      />
-      <div
-        ref={ringRef}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-9 w-9 rounded-full border border-foreground/60 opacity-0 mix-blend-difference transition-[opacity,border-color] duration-200"
-      />
-    </>
+        className={`flex -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden transition-[width,height,border-radius,background-color,opacity,scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isArrow ? "h-16 w-16 rounded-full" : SIZE[mode]
+        } ${isLabel ? "bg-accent text-background" : "bg-foreground"} ${visible ? "opacity-100" : "opacity-0"} ${
+          pressed ? "scale-75" : "scale-100"
+        }`}
+      >
+        <span
+          className={`whitespace-nowrap font-medium transition-opacity duration-200 ${isArrow ? "text-2xl" : "text-sm"} ${
+            isLabel ? "opacity-100 delay-100" : "opacity-0"
+          }`}
+        >
+          {label}
+        </span>
+      </div>
+    </motion.div>
   );
 }

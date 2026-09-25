@@ -120,6 +120,7 @@ export default async function ProjectPage({
         <Reveal>
           <Link
             href={`/projets/${next.slug}`}
+            data-cursor="Suivant"
             className="group mt-8 flex flex-col gap-2 border-t border-foreground/10 pt-10"
           >
             <span className="font-mono text-xs uppercase tracking-widest text-muted">
