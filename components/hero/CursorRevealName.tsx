@@ -52,7 +52,9 @@ export function CursorRevealName() {
 
   return (
     <div ref={containerRef} className="relative inline-block select-none">
-      <h1 className={`${NAME_CLASSES} text-foreground`}>Adam Bellanger</h1>
+      <div aria-hidden="true" className={`${NAME_CLASSES} text-foreground`}>
+        Adam Bellanger
+      </div>
       <div
         ref={revealRef}
         aria-hidden="true"

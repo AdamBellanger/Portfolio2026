@@ -13,7 +13,7 @@ export default function ProjetsPage() {
       <Reveal>
         <h1 className="font-display text-5xl sm:text-6xl">Projets</h1>
       </Reveal>
-      <div className="mt-8 flex flex-col gap-6">
+      <div className="mt-8 flex flex-col border-b border-foreground/10">
         {projects.map((project, i) => (
           <Reveal key={project.slug} delay={i * 0.1}>
             <ProjectCard project={project} />

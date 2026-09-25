@@ -13,9 +13,16 @@ const links = [
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    const handleScroll = () => setCompact(window.scrollY > 80);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -62,21 +69,30 @@ export function SiteNav() {
       <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 sm:px-10">
         <Link
           href="/"
-          className="font-display text-sm tracking-wide"
           onClick={() => setOpen(false)}
+          className={`font-display text-sm tracking-wide transition-opacity duration-300 ${
+            compact && !open ? "pointer-events-none opacity-0" : "opacity-100"
+          }`}
         >
           AB
         </Link>
-        <button
+        <motion.button
           ref={toggleRef}
           type="button"
+          layout
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="site-nav-overlay"
-          className="font-mono text-xs uppercase tracking-widest text-foreground cursor-pointer"
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className={`cursor-pointer font-mono text-xs uppercase tracking-widest text-foreground ${
+            compact && !open
+              ? "flex h-11 w-11 items-center justify-center rounded-full border border-foreground/20 bg-background/80 backdrop-blur"
+              : ""
+          }`}
         >
-          {open ? "Fermer" : "Menu"}
-        </button>
+          {open ? "Fermer" : compact ? <span aria-hidden className="h-2 w-2 rounded-full bg-accent" /> : "Menu"}
+          {compact && !open && <span className="sr-only">Menu</span>}
+        </motion.button>
       </header>
       <AnimatePresence>
         {open && (
