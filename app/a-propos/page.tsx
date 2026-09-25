@@ -1,29 +1,89 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
+import { Skills } from "@/components/home/Skills";
 
 export const metadata: Metadata = {
   title: "À propos — Adam Bellanger",
 };
 
+const timeline = [
+  {
+    place: "Socacom — Saint-Martin-du-Vivier",
+    role: "Apprenti technicien réseau & télécom",
+    text: "Téléphonie d'entreprise (Alcatel OXO Connect, Centrex UnyCX, SIP/VoIP, trunks SIP), infra réseau (switches Huawei, FortiGate, VLAN) et support SAV client. J'y ai aussi développé TéléDesk et DocsDesk, deux outils internes qui automatisent la saisie dans la GMAO.",
+  },
+  {
+    place: "IRIS — Rouen",
+    role: "BTS SIO, option SISR (alternance)",
+    text: "Administration systèmes et réseaux, sécurité, services d'infrastructure, avec des modules de développement web (PHP/MySQL) en parallèle.",
+  },
+  {
+    place: "Homelab — adambellanger.pro",
+    role: "Auto-hébergement & auto-formation",
+    text: "Un serveur Hetzner géré de A à Z : Docker, reverse proxy, monitoring, automatisation. C'est là que je déploie et fais tourner tous mes projets.",
+  },
+];
+
 export default function AProposPage() {
   return (
-    <section className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-6 px-6 py-32 sm:px-10">
-      <Reveal>
-        <h1 className="font-display text-5xl sm:text-6xl">À propos</h1>
-      </Reveal>
-      <Reveal delay={0.1}>
-        <p className="text-lg text-foreground/90">
-          Apprenti BTS SIO (option SISR) à l&apos;IRIS Rouen et technicien
-          télécom/réseau chez Socacom — téléphonie d&apos;entreprise, infra
-          réseau, support client. En parallèle, développeur full-stack
-          autodidacte et auto-hébergeur de ma propre infrastructure.
-        </p>
-      </Reveal>
-      <Reveal delay={0.2}>
-        <p className="text-muted">
-          À compléter : parcours détaillé, homelab, formation.
-        </p>
-      </Reveal>
-    </section>
+    <>
+      <section className="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 pb-24 pt-40 sm:px-10">
+        <Reveal>
+          <h1 className="font-display text-5xl sm:text-7xl">À propos</h1>
+        </Reveal>
+        <div className="grid gap-10 sm:grid-cols-[2fr_1fr]">
+          <Reveal delay={0.1}>
+            <p className="font-display text-2xl leading-snug sm:text-3xl">
+              Technicien réseau & télécom le jour, développeur full-stack le
+              reste du temps. Je ne choisis pas entre les deux : c&apos;est
+              justement ce croisement qui me rend utile.
+            </p>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="text-muted">
+              Je comprends ce qui se passe sous le code (VLAN, SIP, pare-feu,
+              DNS) et je sais construire l&apos;outil qui manque au-dessus.
+              Mes projets partent souvent d&apos;un vrai problème de terrain.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 pb-32 sm:px-10">
+        <Reveal>
+          <h2 className="font-display text-3xl sm:text-4xl">Parcours</h2>
+        </Reveal>
+        <ol className="flex flex-col border-b border-foreground/10">
+          {timeline.map((item, i) => (
+            <Reveal key={item.place} delay={i * 0.05}>
+              <li className="grid gap-3 border-t border-foreground/10 py-8 sm:grid-cols-[1fr_2fr] sm:gap-10">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-widest text-accent">
+                    {item.role}
+                  </p>
+                  <h3 className="mt-2 font-display text-xl">{item.place}</h3>
+                </div>
+                <p className="text-foreground/80">{item.text}</p>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+      </section>
+
+      <Skills />
+
+      <section className="mx-auto w-full max-w-4xl px-6 pb-32 sm:px-10">
+        <Reveal>
+          <Link
+            href="/contact"
+            className="group inline-flex items-baseline gap-4 font-display text-4xl sm:text-6xl"
+          >
+            <span className="transition-colors group-hover:text-accent">Travaillons ensemble</span>
+            <span className="transition-transform duration-300 group-hover:translate-x-2">→</span>
+          </Link>
+        </Reveal>
+      </section>
+    </>
   );
 }

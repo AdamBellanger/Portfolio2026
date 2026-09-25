@@ -16,17 +16,6 @@ export function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-background/20" />
 
-        <Reveal delay={0.2} className="absolute bottom-44 left-6 z-10 sm:left-10">
-          <div className="flex items-center gap-3 rounded-full border border-foreground/15 bg-background/70 py-2 pl-4 pr-2 backdrop-blur">
-            <span className="font-mono text-xs uppercase tracking-widest text-muted">
-              Basé à Rouen, France
-            </span>
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-anthracite text-xs">
-              ✦
-            </span>
-          </div>
-        </Reveal>
-
         <Reveal delay={0.35} className="absolute right-6 top-32 z-10 sm:right-10">
           <div className="flex flex-col items-end gap-4 text-right">
             <span aria-hidden className="font-display text-2xl text-accent">
@@ -41,6 +30,16 @@ export function Hero() {
         </Reveal>
 
         <div className="relative z-10 mt-auto pb-6">
+          <Reveal delay={0.2} className="mb-4 px-6 sm:mb-2 sm:px-10">
+            <div className="inline-flex items-center gap-3 rounded-full border border-foreground/15 bg-background/70 py-2 pl-4 pr-2 backdrop-blur">
+              <span className="font-mono text-xs uppercase tracking-widest text-muted">
+                Basé à Rouen, France
+              </span>
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-anthracite text-xs">
+                ✦
+              </span>
+            </div>
+          </Reveal>
           <HeroNameMarquee />
           <Reveal delay={0.5} className="px-6 sm:px-10">
             <p className="mt-2 max-w-md font-mono text-sm text-muted">

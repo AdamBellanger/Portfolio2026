@@ -92,7 +92,7 @@ export function SiteNav() {
         </Link>
         <nav
           aria-label="Navigation principale"
-          className={`flex items-center gap-8 transition-opacity duration-300 ${
+          className={`hidden items-center gap-8 transition-opacity sm:flex duration-300 ${
             compact || open ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
         >
@@ -118,7 +118,7 @@ export function SiteNav() {
             open
               ? "bg-accent text-background"
               : "border border-foreground/20 bg-background/80 text-foreground backdrop-blur"
-          } ${compact || open ? "" : "hidden"}`}
+          } ${compact || open ? "" : "sm:hidden"}`}
         >
           {open ? (
             <span aria-hidden className="text-base leading-none">

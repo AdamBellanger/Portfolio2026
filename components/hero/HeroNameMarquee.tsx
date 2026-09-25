@@ -4,7 +4,7 @@ import { useReducedMotion } from "framer-motion";
 import { CursorRevealName } from "@/components/hero/CursorRevealName";
 
 const SEPARATOR = (
-  <span aria-hidden="true" className="font-display text-[13vw] leading-[0.95] text-muted sm:text-[9vw]">
+  <span aria-hidden="true" className="font-display text-[19vw] leading-[0.95] text-muted sm:text-[15vw]">
     &nbsp;—&nbsp;
   </span>
 );

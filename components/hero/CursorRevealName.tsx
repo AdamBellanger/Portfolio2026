@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 
 const NAME_CLASSES =
-  "font-display text-[13vw] font-medium leading-[0.95] tracking-tight sm:text-[9vw]";
+  "whitespace-nowrap font-display text-[19vw] font-medium leading-[0.95] tracking-tight sm:text-[15vw]";
 
 export function CursorRevealName() {
   const containerRef = useRef<HTMLDivElement>(null);

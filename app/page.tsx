@@ -3,7 +3,8 @@ import { Hero } from "@/components/hero/Hero";
 import { Manifesto } from "@/components/home/Manifesto";
 import { ProjectCard } from "@/components/case-study/ProjectCard";
 import { Reveal } from "@/components/ui/Reveal";
-import { projects } from "@/content/projects";
+import { Skills } from "@/components/home/Skills";
+import { featuredProjects } from "@/content/projects";
 
 export default function Home() {
   return (
@@ -18,13 +19,14 @@ export default function Home() {
           </Link>
         </Reveal>
         <div className="flex flex-col border-b border-foreground/10">
-          {projects.map((project, i) => (
+          {featuredProjects.map((project, i) => (
             <Reveal key={project.slug} delay={i * 0.1}>
               <ProjectCard project={project} />
             </Reveal>
           ))}
         </div>
       </section>
+      <Skills />
     </>
   );
 }

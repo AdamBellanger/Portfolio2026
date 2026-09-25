@@ -8,14 +8,15 @@ export function ProjectCard({ project }: { project: Project }) {
       className="group flex flex-col gap-3 border-t border-foreground/10 py-8 transition-colors hover:border-accent/40 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
     >
       <div>
-        <h3 className="font-display text-3xl transition-colors group-hover:text-accent sm:text-4xl">
+        <h3 className="font-display text-3xl transition-all duration-300 group-hover:translate-x-2 group-hover:text-accent sm:text-4xl">
           {project.title}
         </h3>
         <p className="mt-2 max-w-lg text-muted">{project.pitch}</p>
       </div>
-      <p className="shrink-0 font-mono text-xs uppercase tracking-widest text-muted sm:text-right">
-        {project.stack.slice(0, 2).join(" · ")}
-      </p>
+      <div className="flex shrink-0 flex-col gap-1 font-mono text-xs uppercase tracking-widest text-muted sm:items-end sm:text-right">
+        <span className="text-accent">{project.kind}</span>
+        <span>{project.stack.slice(0, 2).join(" · ")}</span>
+      </div>
     </Link>
   );
 }

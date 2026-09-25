@@ -33,13 +33,17 @@ export default async function ProjectPage({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
+  const next = projects[(projects.indexOf(project) + 1) % projects.length];
 
   return (
     <article className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-12 px-6 py-32 sm:px-10">
       <Reveal>
-        <Link href="/projets" className="font-mono text-xs uppercase tracking-widest text-muted">
-          ← Projets
-        </Link>
+        <div className="flex items-center justify-between font-mono text-xs uppercase tracking-widest text-muted">
+          <Link href="/projets" className="hover:text-accent">
+            ← Projets
+          </Link>
+          <span className="text-accent">{project.kind}</span>
+        </div>
         <h1 className="mt-4 font-display text-5xl sm:text-6xl">{project.title}</h1>
         <p className="mt-4 max-w-lg text-lg text-muted">{project.pitch}</p>
         <ul className="mt-5 flex flex-wrap gap-2">
@@ -61,6 +65,17 @@ export default async function ProjectPage({
         </Reveal>
       ))}
 
+      <Reveal>
+        <h2 className="font-display text-2xl text-accent">Points clés</h2>
+        <ul className="mt-3 flex flex-col border-b border-foreground/10">
+          {project.highlights.map((highlight) => (
+            <li key={highlight} className="border-t border-foreground/10 py-3 text-foreground/90">
+              {highlight}
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+
       {(project.repoUrl || project.demoUrl) && (
         <Reveal>
           <div className="flex gap-6 border-t border-foreground/10 pt-6 font-mono text-sm">
@@ -77,6 +92,18 @@ export default async function ProjectPage({
           </div>
         </Reveal>
       )}
+
+      <Reveal>
+        <Link
+          href={`/projets/${next.slug}`}
+          className="group mt-8 flex flex-col gap-2 border-t border-foreground/10 pt-10"
+        >
+          <span className="font-mono text-xs uppercase tracking-widest text-muted">Projet suivant</span>
+          <span className="font-display text-4xl transition-all duration-300 group-hover:translate-x-2 group-hover:text-accent sm:text-6xl">
+            {next.title} →
+          </span>
+        </Link>
+      </Reveal>
     </article>
   );
 }
