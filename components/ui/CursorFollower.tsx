@@ -74,7 +74,7 @@ export function CursorFollower() {
       />
       <div
         ref={ringRef}
-        className="pointer-events-none fixed left-0 top-0 z-[100] h-9 w-9 rounded-full border border-foreground/60 opacity-0 transition-[opacity,border-color] duration-200"
+        className="pointer-events-none fixed left-0 top-0 z-[100] h-9 w-9 rounded-full border border-foreground/60 opacity-0 mix-blend-difference transition-[opacity,border-color] duration-200"
       />
     </>
   );

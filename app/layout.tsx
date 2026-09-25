@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { SiteNav } from "@/components/layout/SiteNav";
 import { PageTransition } from "@/components/layout/PageTransition";
+import { Footer } from "@/components/layout/Footer";
 import { CursorFollower } from "@/components/ui/CursorFollower";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import "./globals.css";
@@ -43,7 +44,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SmoothScroll />
         <CursorFollower />
         <SiteNav />
-        <PageTransition>{children}</PageTransition>
+        <PageTransition>
+          {children}
+          <Footer />
+        </PageTransition>
       </body>
     </html>
   );

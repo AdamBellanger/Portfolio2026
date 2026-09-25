@@ -11,6 +11,19 @@
   --portrait-image: linear-gradient(135deg, #c9d6e6 0%, var(--accent) 55%, #3e4d63 100%);
 }
 
+/* Light surface for content sections (projects, about), Snellenberg-style:
+   dark hero/footer framing light content. Redefining the tokens means every
+   bg-background / text-foreground / text-muted inside just follows. */
+.theme-light {
+  --background: #edede8;
+  --foreground: #161618;
+  --anthracite: #e2e2dc;
+  --muted: #6a6a70;
+  --accent: #4d6788;
+  background: var(--background);
+  color: var(--foreground);
+}
+
 html.cursor-none {
   cursor: none;
 }

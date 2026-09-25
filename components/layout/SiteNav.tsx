@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useMagnetic } from "@/components/ui/Magnetic";
+import { site } from "@/content/site";
 
 const links = [
   { href: "/", label: "Accueil" },
@@ -15,9 +17,8 @@ const links = [
 const topLinks = links.slice(1);
 
 const socials = [
-  { label: "GitHub", href: "https://github.com/AdamBellanger" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "Email", href: "mailto:contact@adambellanger.pro" },
+  ...site.socials,
+  { label: "Email", href: `mailto:${site.email}` },
 ];
 
 export function SiteNav() {
@@ -27,6 +28,7 @@ export function SiteNav() {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const magnetic = useMagnetic(0.4);
 
   useEffect(() => {
     const handleScroll = () => setCompact(window.scrollY > 80);
@@ -45,7 +47,7 @@ export function SiteNav() {
       }
       if (e.key !== "Tab" || !overlayRef.current) return;
       const focusable = overlayRef.current.querySelectorAll<HTMLElement>(
-        "a[href], button:not([disabled])"
+        "a[href], button:not([disabled])",
       );
       if (focusable.length === 0) return;
       const first = focusable[0];
@@ -77,7 +79,7 @@ export function SiteNav() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 sm:px-10 ${
+        className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-5 text-foreground mix-blend-difference sm:px-10 ${
           compact || open ? "pointer-events-none" : ""
         }`}
       >
@@ -92,44 +94,61 @@ export function SiteNav() {
         </Link>
         <nav
           aria-label="Navigation principale"
-          className={`hidden items-center gap-8 transition-opacity sm:flex duration-300 ${
+          className={`hidden items-center gap-8 transition-opacity duration-300 sm:flex ${
             compact || open ? "pointer-events-none opacity-0" : "opacity-100"
           }`}
         >
-          {topLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-foreground transition-colors hover:text-accent"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {topLinks.map((link) => {
+            const active =
+              pathname === link.href || pathname.startsWith(`${link.href}/`);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className="group relative text-sm transition-opacity hover:opacity-60"
+              >
+                {link.label}
+                <span
+                  aria-hidden
+                  className={`absolute -bottom-3 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-current transition-transform duration-300 ${
+                    active ? "scale-100" : "scale-0 group-hover:scale-100"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </nav>
-        <motion.button
-          ref={toggleRef}
-          type="button"
-          layout
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="site-nav-overlay"
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className={`pointer-events-auto fixed right-6 top-5 z-50 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full sm:right-10 ${
-            open
-              ? "bg-accent text-background"
-              : "border border-foreground/20 bg-background/80 text-foreground backdrop-blur"
-          } ${compact || open ? "" : "sm:hidden"}`}
-        >
-          {open ? (
-            <span aria-hidden className="text-base leading-none">
-              ✕
-            </span>
-          ) : (
-            <span aria-hidden className="h-2 w-2 rounded-full bg-accent" />
-          )}
-          <span className="sr-only">{open ? "Fermer le menu" : "Ouvrir le menu"}</span>
-        </motion.button>
       </header>
+      <motion.button
+        ref={toggleRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="site-nav-overlay"
+        {...magnetic}
+        className={`pointer-events-auto fixed right-4 top-4 z-50 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full transition-colors duration-300 sm:right-8 sm:h-16 sm:w-16 ${
+          open
+            ? "bg-accent text-background"
+            : "border border-foreground/20 bg-anthracite/90 text-foreground backdrop-blur"
+        } ${compact || open ? "" : "sm:hidden"}`}
+      >
+        <span aria-hidden className="relative block h-3 w-6">
+          <span
+            className={`absolute left-0 h-px w-full bg-current transition-transform duration-300 ${
+              open ? "top-1/2 rotate-45" : "top-0"
+            }`}
+          />
+          <span
+            className={`absolute left-0 h-px w-full bg-current transition-transform duration-300 ${
+              open ? "top-1/2 -rotate-45" : "bottom-0"
+            }`}
+          />
+        </span>
+        <span className="sr-only">
+          {open ? "Fermer le menu" : "Ouvrir le menu"}
+        </span>
+      </motion.button>
       <AnimatePresence>
         {open && (
           <>
@@ -166,7 +185,10 @@ export function SiteNav() {
                     return (
                       <li key={link.href} className="flex items-center gap-3">
                         {active && (
-                          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
+                          <span
+                            aria-hidden
+                            className="h-1.5 w-1.5 rounded-full bg-accent"
+                          />
                         )}
                         <Link
                           href={link.href}
@@ -191,8 +213,14 @@ export function SiteNav() {
                     <li key={social.label}>
                       <a
                         href={social.href}
-                        target={social.href.startsWith("http") ? "_blank" : undefined}
-                        rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        target={
+                          social.href.startsWith("http") ? "_blank" : undefined
+                        }
+                        rel={
+                          social.href.startsWith("http")
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
                         className="text-sm text-foreground transition-colors hover:text-accent"
                       >
                         {social.label}
