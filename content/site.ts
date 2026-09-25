@@ -2,6 +2,9 @@
 // the footer and the contact page.
 export const site = {
   name: "Adam Bellanger",
+  url: "https://adambellanger.pro",
+  description:
+    "Portfolio d'Adam Bellanger : alternant administrateur systèmes & réseaux (BTS SIO SISR) et développeur full-stack. Téléphonie d'entreprise, infra réseau, React / Next.js et auto-hébergement.",
   email: "compteproadam.bellanger@gmail.com",
   location: "France",
   // Public Uptime Kuma status page. Leave statusSlug null until a status page

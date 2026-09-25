@@ -6,6 +6,7 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { CursorFollower } from "@/components/ui/CursorFollower";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { site } from "@/content/site";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -30,8 +31,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Adam Bellanger",
-  description: "Portfolio d'Adam Bellanger — développeur full-stack & technicien réseau/télécom.",
+  metadataBase: new URL(site.url),
+  title: "Adam Bellanger — Systèmes, réseaux & développement",
+  description: site.description,
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: site.url,
+    siteName: site.name,
+    title: "Adam Bellanger — Systèmes, réseaux & développement",
+    description: site.description,
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -40,11 +40,17 @@ Puis dans Nginx Proxy Manager → **Proxy Hosts → Add Proxy Host** :
 - Cocher *Block Common Exploits* et *Websockets Support*
 - Onglet SSL : certificat Let's Encrypt, *Force SSL*, *HTTP/2*
 
-Mise à jour :
+Mise à jour (pull, rebuild, redémarrage, nettoyage des anciennes images, vérification du healthcheck) :
 
 ```bash
-git pull && docker compose up -d --build
+./deploy.sh
 ```
+
+### SSL
+
+Dans Nginx Proxy Manager, le certificat Let's Encrypt doit couvrir
+`adambellanger.pro` **et** `www.adambellanger.pro`, avec le renouvellement
+automatique actif (SSL Certificates → vérifier la date d'expiration).
 
 ### Formulaire de contact
 
