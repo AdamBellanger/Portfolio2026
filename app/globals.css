@@ -6,6 +6,9 @@
   --anthracite: #232326;
   --muted: #8c8c90;
   --accent: #b8967d;
+  /* Stand-in for the hero reveal photo until public/images/portrait.jpg exists.
+     Swap for url('/images/portrait.jpg') once the real photo is added. */
+  --portrait-image: linear-gradient(135deg, var(--accent), var(--foreground) 55%, var(--anthracite));
 }
 
 @theme inline {
