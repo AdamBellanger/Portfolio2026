@@ -6,10 +6,8 @@
   --anthracite: #232326;
   --muted: #8c8c90;
   --accent: #7c93b0;
-  /* Stand-in for the hero reveal photo until public/images/portrait.jpg exists.
-     Swap for url('/images/portrait.jpg') once the real photo is added.
-     Deliberately higher-contrast/warmer than --foreground so the reveal
-     reads clearly against the plain text instead of blending into it. */
+  /* Fill revealed inside the hero name under the cursor. Deliberately
+     higher-contrast than --foreground so the reveal reads clearly. */
   --portrait-image: linear-gradient(135deg, #c9d6e6 0%, var(--accent) 55%, #3e4d63 100%);
 }
 
