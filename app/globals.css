@@ -7,8 +7,14 @@
   --muted: #8c8c90;
   --accent: #b8967d;
   /* Stand-in for the hero reveal photo until public/images/portrait.jpg exists.
-     Swap for url('/images/portrait.jpg') once the real photo is added. */
-  --portrait-image: linear-gradient(135deg, var(--accent), var(--foreground) 55%, var(--anthracite));
+     Swap for url('/images/portrait.jpg') once the real photo is added.
+     Deliberately higher-contrast/warmer than --foreground so the reveal
+     reads clearly against the plain text instead of blending into it. */
+  --portrait-image: linear-gradient(135deg, #f2c9a0 0%, var(--accent) 55%, #7a5a3e 100%);
+}
+
+html.cursor-none {
+  cursor: none;
 }
 
 @theme inline {

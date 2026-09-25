@@ -13,8 +13,8 @@ export function CursorRevealName() {
 
   const x = useMotionValue(-9999);
   const y = useMotionValue(-9999);
-  const springX = useSpring(x, { stiffness: 200, damping: 30, mass: 0.5 });
-  const springY = useSpring(y, { stiffness: 200, damping: 30, mass: 0.5 });
+  const springX = useSpring(x, { stiffness: 300, damping: 26, mass: 0.3 });
+  const springY = useSpring(y, { stiffness: 300, damping: 26, mass: 0.3 });
 
   useEffect(() => {
     const el = containerRef.current;
@@ -61,9 +61,9 @@ export function CursorRevealName() {
           ["--reveal-x" as string]: "-9999px",
           ["--reveal-y" as string]: "-9999px",
           WebkitMaskImage:
-            "radial-gradient(circle 130px at var(--reveal-x) var(--reveal-y), black 0%, black 55%, transparent 100%)",
+            "radial-gradient(circle 220px at var(--reveal-x) var(--reveal-y), black 0%, black 60%, transparent 100%)",
           maskImage:
-            "radial-gradient(circle 130px at var(--reveal-x) var(--reveal-y), black 0%, black 55%, transparent 100%)",
+            "radial-gradient(circle 220px at var(--reveal-x) var(--reveal-y), black 0%, black 60%, transparent 100%)",
         }}
       >
         Adam Bellanger
