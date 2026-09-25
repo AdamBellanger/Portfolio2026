@@ -1,0 +1,18 @@
+services:
+  portfolio:
+    build: .
+    image: adam-bellanger-portfolio:latest
+    container_name: portfolio
+    restart: unless-stopped
+    env_file:
+      - .env
+    # No published port: Nginx Proxy Manager reaches it by container name
+    # over the shared network (Forward Hostname: portfolio, Port: 3000).
+    expose:
+      - "3000"
+    networks:
+      - services_default
+
+networks:
+  services_default:
+    external: true

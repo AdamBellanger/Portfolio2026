@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { Skills } from "@/components/home/Skills";
+import { CvButton } from "@/components/ui/CvButton";
 
 export const metadata: Metadata = {
   title: "À propos — Adam Bellanger",
@@ -47,6 +48,7 @@ export default function AProposPage() {
               DNS) et je sais construire l&apos;outil qui manque au-dessus. Mes
               projets partent souvent d&apos;un vrai problème de terrain.
             </p>
+            <CvButton className="mt-6" />
           </Reveal>
         </div>
       </section>

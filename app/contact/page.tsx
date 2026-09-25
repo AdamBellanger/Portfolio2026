@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
+import { CvButton } from "@/components/ui/CvButton";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -63,6 +64,7 @@ export default function ContactPage() {
             En alternance BTS SIO. Ouvert aux projets web, infra et aux opportunités après le diplôme.
           </p>
         </div>
+        <CvButton />
       </Reveal>
     </section>
   );

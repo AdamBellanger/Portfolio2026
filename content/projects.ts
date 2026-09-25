@@ -110,6 +110,7 @@ export const projects: Project[] = [
       "Formats WAV, MP3, M4A, OGG, FLAC",
     ],
     repoUrl: "https://github.com/AdamBellanger/OpenWhisper",
+    demoUrl: "https://whisper.adambellanger.pro",
   },
   {
     slug: "album-photo",
@@ -132,6 +133,41 @@ export const projects: Project[] = [
       "PostgreSQL + Drizzle ORM",
     ],
     repoUrl: "https://github.com/AdamBellanger/Album-photo",
+  },
+  {
+    slug: "qrcode",
+    title: "QR Code Generator",
+    kind: "Perso",
+    pitch:
+      "Uploadez une image, récupérez un QR code qui pointe vers une URL publique servant cette image.",
+    stack: ["React", "TypeScript", "Express", "Node.js", "Docker"],
+    context:
+      "Partager une image via un simple QR code, sans passer par un service tiers : l'image est stockée sur mon serveur et servie directement.",
+    role: "Développement full-stack et conteneurisation.",
+    challenges:
+      "Gérer des uploads jusqu'à 100 Mo derrière un reverse proxy (limites de taille côté nginx/Caddy), respecter les en-têtes X-Forwarded-* et exposer un endpoint de health check pour Docker.",
+    result:
+      "Une app en un seul conteneur (front React compilé servi par Express), images persistées sur volume, prête à déployer derrière n'importe quel reverse proxy.",
+    highlights: ["Front + API TypeScript", "Un conteneur, un volume", "Health check intégré"],
+    repoUrl: "https://github.com/AdamBellanger/Qrcode",
+  },
+  {
+    slug: "mancity-univers",
+    title: "Manchester City Universe",
+    kind: "École",
+    pitch:
+      "Application PHP de gestion d'un club de football : joueurs, matchs et statistiques, avec trois rôles distincts.",
+    stack: ["PHP", "MySQL", "PDO", "JavaScript", "Chart.js"],
+    context:
+      "Projet du module Développement Web Backend en BTS SIO, réalisé en binôme avec Wassim El Goz sur le thème de Manchester City.",
+    role:
+      "Co-développement : modèle de données, authentification et rôles, CRUD et tableaux de bord.",
+    challenges:
+      "Trois vues très différentes sur les mêmes données : le staff gère joueurs, matchs et stats, le joueur ne voit que ses propres performances, le supporter consulte la saison. Recherche temps réel, filtres et pagination sur les listes.",
+    result:
+      "Une application complète avec dashboards Chart.js, upload de photos, mode sombre/clair et une zone fan, avec l'ensemble des bonus du sujet implémentés.",
+    highlights: ["3 rôles : Staff / Joueur / Supporter", "CRUD complet + stats par match", "Projet en binôme"],
+    repoUrl: "https://github.com/AdamBellanger/ProjetUniversManCity",
   },
 ];
 

@@ -30,6 +30,51 @@ function LocalTime() {
   return <span suppressHydrationWarning>{time ?? "--:--"}</span>;
 }
 
+const STATUS_TEXT = {
+  up: { label: "Services en ligne", dot: "bg-emerald-400" },
+  degraded: { label: "Incident en cours", dot: "bg-amber-400" },
+} as const;
+
+/** Subtle live indicator fed by the public Uptime Kuma status page. */
+function ServerStatus() {
+  const [status, setStatus] = useState<keyof typeof STATUS_TEXT | null>(null);
+
+  useEffect(() => {
+    if (!site.statusSlug) return;
+    let cancelled = false;
+    fetch("/api/status")
+      .then((res) => res.json())
+      .then((data: { status: string }) => {
+        if (!cancelled && (data.status === "up" || data.status === "degraded")) setStatus(data.status);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!status) return null;
+  const { label, dot } = STATUS_TEXT[status];
+
+  return (
+    <div>
+      <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Infra</p>
+      <a
+        href={`${site.uptimeUrl}/status/${site.statusSlug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-2 flex items-center gap-2 text-sm transition-colors hover:text-accent"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${dot}`} />
+          <span className={`relative inline-flex h-2 w-2 rounded-full ${dot}`} />
+        </span>
+        {label}
+      </a>
+    </div>
+  );
+}
+
 const pill =
   "rounded-full border border-foreground/15 px-6 py-4 text-sm transition-colors hover:border-accent hover:text-accent sm:px-8 sm:py-5 sm:text-base";
 
@@ -74,7 +119,7 @@ export function Footer() {
       )}
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-10 sm:flex-row sm:items-end sm:justify-between sm:px-10">
-        <div className="flex gap-10">
+        <div className="flex flex-wrap gap-x-10 gap-y-6">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Version</p>
             <p className="mt-2 text-sm">Édition 2026</p>
@@ -85,6 +130,7 @@ export function Footer() {
               <LocalTime />
             </p>
           </div>
+          <ServerStatus />
         </div>
         <div>
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Socials</p>

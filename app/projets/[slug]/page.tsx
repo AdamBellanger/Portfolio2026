@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getProject, projects, type Project } from "@/content/projects";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
+import { Magnetic } from "@/components/ui/Magnetic";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -63,6 +64,38 @@ export default async function ProjectPage({
           </ul>
         </Reveal>
 
+        {(project.repoUrl || project.demoUrl) && (
+          <Reveal>
+            <div className="flex flex-wrap gap-4">
+              {project.demoUrl && (
+                <Magnetic strength={0.25}>
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 rounded-full bg-accent px-8 py-4 text-background transition-transform duration-300 hover:scale-105"
+                  >
+                    <span className="h-2 w-2 rounded-full bg-background" />
+                    Voir le site ↗
+                  </a>
+                </Magnetic>
+              )}
+              {project.repoUrl && (
+                <Magnetic strength={0.25}>
+                  <a
+                    href={project.repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex rounded-full border border-foreground/20 px-8 py-4 transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+                  >
+                    Voir le code sur GitHub ↗
+                  </a>
+                </Magnetic>
+              )}
+            </div>
+          </Reveal>
+        )}
+
         {SECTIONS.map(({ key, label }, i) => (
           <Reveal key={key} delay={i * 0.05}>
             <h2 className="font-display text-2xl text-accent">{label}</h2>
@@ -83,33 +116,6 @@ export default async function ProjectPage({
             ))}
           </ul>
         </Reveal>
-
-        {(project.repoUrl || project.demoUrl) && (
-          <Reveal>
-            <div className="flex gap-6 border-t border-foreground/10 pt-6 font-mono text-sm">
-              {project.repoUrl && (
-                <a
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-accent"
-                >
-                  Voir le code →
-                </a>
-              )}
-              {project.demoUrl && (
-                <a
-                  href={project.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-accent"
-                >
-                  Voir la démo →
-                </a>
-              )}
-            </div>
-          </Reveal>
-        )}
 
         <Reveal>
           <Link

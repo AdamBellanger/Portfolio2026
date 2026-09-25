@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Adam Bellanger
 
-## Getting Started
+Next.js 16 (App Router) · TypeScript · Tailwind CSS v4 · Framer Motion · Lenis.
+Direction et contraintes du projet : voir `CLAUDE.md` et `DESIGN-REFERENCE.md`.
 
-First, run the development server:
+## Développement
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contenu
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Quoi | Où |
+|---|---|
+| Email, socials, localisation, statut Uptime Kuma | `content/site.ts` |
+| Projets (études de cas) | `content/projects.ts` — `featured: true` = affiché sur l'accueil |
+| Compétences | `content/skills.ts` |
+| CV | déposer `public/cv/CV-Adam-Bellanger.pdf` → le bouton apparaît au prochain build |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Déploiement (Hetzner + Nginx Proxy Manager)
 
-## Learn More
+Le site tourne dans un conteneur Next.js `standalone`, sur le réseau Docker
+`services_default` partagé avec Nginx Proxy Manager (aucun port publié).
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# sur le serveur
+git clone https://github.com/AdamBellanger/Portfolio2026.git portfolio
+cd portfolio
+cp .env.example .env          # renseigner CONTACT_WEBHOOK_URL (webhook n8n)
+docker compose up -d --build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Puis dans Nginx Proxy Manager → **Proxy Hosts → Add Proxy Host** :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Domain Names : `adambellanger.pro`, `www.adambellanger.pro`
+- Scheme `http` · Forward Hostname `portfolio` · Forward Port `3000`
+- Cocher *Block Common Exploits* et *Websockets Support*
+- Onglet SSL : certificat Let's Encrypt, *Force SSL*, *HTTP/2*
 
-## Deploy on Vercel
+Mise à jour :
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+git pull && docker compose up -d --build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Formulaire de contact
+
+`POST /api/contact` relaie le message en JSON (`name`, `email`, `company`,
+`subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`. Côté n8n : un nœud
+**Webhook** (POST) suivi d'un envoi d'email ou d'une notification Ntfy.
+Sans webhook configuré, le formulaire ouvre le client mail du visiteur.
+
+### Statut de l'infra (footer)
+
+Créer une page de statut publique dans Uptime Kuma (**Status Pages → New**),
+puis renseigner son slug dans `content/site.ts` (`statusSlug`). L'indicateur
+« Services en ligne » apparaît alors dans le footer.

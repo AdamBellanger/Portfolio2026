@@ -14,7 +14,15 @@ export function ProjectCard({ project }: { project: Project }) {
         <p className="mt-2 max-w-lg text-muted">{project.pitch}</p>
       </div>
       <div className="flex shrink-0 flex-col gap-1 font-mono text-xs uppercase tracking-widest text-muted sm:items-end sm:text-right">
-        <span className="text-accent">{project.kind}</span>
+        <span className="flex items-center gap-3 sm:justify-end">
+          {project.demoUrl && (
+            <span className="flex items-center gap-1.5 text-foreground/70">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              En ligne
+            </span>
+          )}
+          <span className="text-accent">{project.kind}</span>
+        </span>
         <span>{project.stack.slice(0, 2).join(" · ")}</span>
       </div>
     </Link>
