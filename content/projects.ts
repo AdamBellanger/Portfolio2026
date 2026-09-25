@@ -54,7 +54,7 @@ export const projects: Project[] = [
     role:
       "Administration système et réseau en solo : installation, durcissement, DNS et certificats, déploiement des services, supervision et maintenance. Toute la mise en place est documentée dans un repo dédié.",
     challenges:
-      "Faire cohabiter une dizaine de services derrière un seul point d'entrée (Nginx Proxy Manager, DNS wildcard, SSL par sous-domaine) en n'exposant que le strict nécessaire. Un incident de blocage réseau côté Hetzner a aussi demandé un diagnostic complet de la chaîne (DNS, pare-feu, routage) avant résolution.",
+      "Faire cohabiter une dizaine de services derrière un seul point d'entrée (Nginx Proxy Manager, DNS wildcard, SSL par sous-domaine) en n'exposant que le strict nécessaire. Plusieurs incidents réels, tous documentés : un crash mémoire au premier démarrage qui a imposé un rebuild complet depuis la console Hetzner (corrigé en ajoutant du swap) ; une console VNC en clavier QWERTZ qui empêchait de taper certaines commandes ; un VPN qui reroutait tout le trafic et coupait la session SSH (whitelist du port 22, OpenVPN --route-nopull, proxychains et Cloudflare Warp testés) ; un conflit de ports 80/443 entre Nginx système et Nginx Proxy Manager.",
     result:
       "Une infra stable qui sert de socle à tous mes projets : monitoring Prometheus/Grafana, disponibilité suivie par Uptime Kuma, notifications Ntfy, mises à jour automatiques des conteneurs avec Watchtower, et des services Node gérés par PM2.",
     highlights: [
@@ -113,6 +113,50 @@ export const projects: Project[] = [
     demoUrl: "https://whisper.adambellanger.pro",
   },
   {
+    slug: "polytrack",
+    title: "PolyTrack",
+    kind: "Perso",
+    pitch:
+      "Bot de suivi des meilleurs traders Polymarket, avec un dashboard web et des alertes Discord en temps réel.",
+    stack: ["Node.js", "PM2", "PostgreSQL", "Discord.js", "Polymarket CLOB API", "Docker"],
+    context:
+      "Sur Polymarket, quelques traders affichent des gains de plusieurs millions de dollars. PolyTrack surveille leurs wallets, enregistre chacun de leurs trades et les rend consultables dans un dashboard, avec une alerte Discord à chaque nouvelle position.",
+    role:
+      "Conception et développement complet : bot de surveillance, API, base de données, dashboard et déploiement sur mon serveur.",
+    challenges:
+      "Polymarket bloque le trading automatisé depuis l'Europe : j'ai testé plusieurs architectures réseau (OpenVPN, proxy SOCKS5, proxychains, Cloudflare Warp) avant de conclure que l'exécution automatique exige un serveur hébergé aux États-Unis. Côté données : une contrainte UNIQUE manquante sur le hash de transaction qui cassait les upserts, des identifiants UUID mal typés, et une erreur CORS lors du changement de domaine.",
+    result:
+      "Un service en ligne : le bot tourne en continu sous PM2, les trades sont stockés dans PostgreSQL, et le dashboard est accessible sur son propre sous-domaine en HTTPS.",
+    highlights: [
+      "Surveillance continue des wallets des top traders",
+      "Alertes Discord à chaque nouveau trade",
+      "Bot + API sous PM2, frontend en conteneur Docker",
+    ],
+    demoUrl: "https://polytrack.adambellanger.pro",
+  },
+  {
+    slug: "docsdesk",
+    title: "DocsDesk",
+    kind: "Pro",
+    pitch:
+      "Application de bureau qui convertit n'importe quel document en PDF et le dépose dans la fiche client de la GMAO Bob! Desk.",
+    stack: ["Python", "Flask", "React", "Tailwind CSS", "LibreOffice", "PyInstaller"],
+    context:
+      "Suite logique de TéléDesk chez Socacom : les techniciens doivent joindre des documents (Word, Excel, photos, PDF) aux fiches clients de Bob! Desk, un par un et au bon format.",
+    role:
+      "Conception et développement solo, sur la même base technique et la même charte que TéléDesk.",
+    challenges:
+      "Convertir des formats hétérogènes en PDF sans installation lourde (LibreOffice piloté en ligne de commande avec un profil isolé, Pillow pour les images), gérer les identifiants hors du dépôt Git dans le dossier utilisateur, et suivre la progression des envois en temps réel.",
+    result:
+      "Un .exe Windows autonome : on glisse les fichiers, on choisit le client, et tout est converti puis téléversé, avec un mode test qui simule l'envoi sans rien écrire.",
+    highlights: [
+      "Glisser-déposer : .docx, .xlsx, .pdf, images",
+      "Conversion PDF via LibreOffice et Pillow",
+      "Mode test (dry-run) et journal en temps réel",
+    ],
+    repoUrl: "https://github.com/AdamBellanger/DocsDesk",
+  },
+  {
     slug: "album-photo",
     title: "Album photo",
     kind: "Perso",
@@ -150,6 +194,57 @@ export const projects: Project[] = [
       "Une app en un seul conteneur (front React compilé servi par Express), images persistées sur volume, prête à déployer derrière n'importe quel reverse proxy.",
     highlights: ["Front + API TypeScript", "Un conteneur, un volume", "Health check intégré"],
     repoUrl: "https://github.com/AdamBellanger/Qrcode",
+  },
+  {
+    slug: "studio-landing-pages",
+    title: "StudioLandingPages",
+    kind: "Perso",
+    pitch:
+      "Plateforme de création de landing pages en glisser-déposer, avec personnalisation en temps réel et publication en un clic. En cours de développement.",
+    stack: ["React", "Vite", "Tailwind CSS", "GSAP", "Zustand", "PHP", "MySQL"],
+    context:
+      "Permettre de créer une landing page professionnelle sans écrire de code : on assemble des composants, on ajuste styles et contenus, puis on publie.",
+    role: "Conception et développement full-stack : builder React, API REST PHP et base MySQL.",
+    challenges:
+      "Concevoir un builder drag-and-drop dont l'état reste cohérent (Zustand), un rendu responsive fidèle sur desktop, tablette et mobile, et une API REST en PHP pour l'authentification et la sauvegarde des pages.",
+    result:
+      "Projet en cours : builder et gestion des utilisateurs en place ; templates prédéfinis, export HTML/CSS et statistiques de visites prévus.",
+    highlights: ["Builder drag-and-drop", "State management Zustand", "Animations GSAP"],
+    repoUrl: "https://github.com/AdamBellanger/StudioLandingPages",
+  },
+  {
+    slug: "big-five",
+    title: "Big Five",
+    kind: "Perso",
+    pitch:
+      "Test de personnalité Big Five (OCEAN) bilingue, avec interface futuriste et résultats animés, sans aucune dépendance.",
+    stack: ["HTML5", "CSS3", "JavaScript"],
+    context:
+      "Un test de personnalité complet en 60 questions couvrant les 5 grandes dimensions (ouverture, conscienciosité, extraversion, agréabilité, névrosisme), utilisable directement dans le navigateur.",
+    role: "Conception et développement front-end.",
+    challenges:
+      "Tout faire en JavaScript vanilla : logique du quiz, calcul des scores, internationalisation français/anglais à la volée, et une interface glassmorphism responsive sans framework.",
+    result:
+      "Une application 100 % navigateur, bilingue, avec barres de progression animées et descriptions personnalisées pour chaque trait.",
+    highlights: ["60 questions, 5 dimensions", "FR / EN à tout moment", "Zéro dépendance"],
+    repoUrl: "https://github.com/AdamBellanger/OutoffServiceBigFive",
+  },
+  {
+    slug: "portfolio-v1",
+    title: "Portfolio v1 (3D)",
+    kind: "Perso",
+    pitch:
+      "Mon premier portfolio, commencé en première année de BTS SIO : une scène 3D interactive Three.js en arrière-plan.",
+    stack: ["PHP", "JavaScript", "Three.js", "CSS3"],
+    context:
+      "Première version de mon portfolio, construite et enrichie au fil de ma première année de BTS SIO, avant la refonte actuelle.",
+    role: "Conception et développement solo.",
+    challenges:
+      "Intégrer une scène Three.js en arrière-plan sans framework ni bundler (import map via CDN), avec écran de démarrage, navigation en pilule animée, modales de projets et effets glassmorphism.",
+    result:
+      "Un site one-page complet et responsive. Il m'a surtout appris ce que je voulais changer : le site actuel repart de zéro, plus rapide et plus lisible.",
+    highlights: ["Scène 3D Three.js", "JavaScript vanilla", "L'ancêtre de ce site"],
+    repoUrl: "https://github.com/AdamBellanger/Portfolio",
   },
   {
     slug: "mancity-univers",
