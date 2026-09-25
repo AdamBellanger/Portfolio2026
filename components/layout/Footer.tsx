@@ -2,78 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { SplitText } from "@/components/ui/SplitText";
+import { LocalTime } from "@/components/ui/LocalTime";
+import { ServerStatus } from "@/components/ui/ServerStatus";
 import { site } from "@/content/site";
-
-function LocalTime() {
-  const [time, setTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    const format = () =>
-      new Intl.DateTimeFormat("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
-        timeZone: "Europe/Paris",
-        timeZoneName: "short",
-      }).format(new Date());
-    const tick = () => setTime(format());
-    const first = setTimeout(tick, 0);
-    const id = setInterval(tick, 15_000);
-    return () => {
-      clearTimeout(first);
-      clearInterval(id);
-    };
-  }, []);
-
-  return <span suppressHydrationWarning>{time ?? "--:--"}</span>;
-}
-
-const STATUS_TEXT = {
-  up: { label: "Services en ligne", dot: "bg-emerald-400" },
-  degraded: { label: "Incident en cours", dot: "bg-amber-400" },
-} as const;
-
-/** Subtle live indicator fed by the public Uptime Kuma status page. */
-function ServerStatus() {
-  const [status, setStatus] = useState<keyof typeof STATUS_TEXT | null>(null);
-
-  useEffect(() => {
-    if (!site.statusSlug) return;
-    let cancelled = false;
-    fetch("/api/status")
-      .then((res) => res.json())
-      .then((data: { status: string }) => {
-        if (!cancelled && (data.status === "up" || data.status === "degraded")) setStatus(data.status);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (!status) return null;
-  const { label, dot } = STATUS_TEXT[status];
-
-  return (
-    <div>
-      <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Infra</p>
-      <a
-        href={`${site.uptimeUrl}/status/${site.statusSlug}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-2 flex items-center gap-2 text-sm transition-colors hover:text-accent"
-      >
-        <span className="relative flex h-2 w-2">
-          <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${dot}`} />
-          <span className={`relative inline-flex h-2 w-2 rounded-full ${dot}`} />
-        </span>
-        {label}
-      </a>
-    </div>
-  );
-}
 
 const pill =
   "rounded-full border border-foreground/15 px-6 py-4 text-sm transition-colors hover:border-accent hover:text-accent sm:px-8 sm:py-5 sm:text-base";
@@ -130,7 +63,7 @@ export function Footer() {
               <LocalTime />
             </p>
           </div>
-          <ServerStatus />
+          <ServerStatus title="Infra" titleClassName="font-mono text-[10px] uppercase tracking-widest text-muted" />
         </div>
         <div>
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted">Socials</p>

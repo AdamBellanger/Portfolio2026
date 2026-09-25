@@ -8,13 +8,20 @@ const FIELDS = [
   { name: "name", label: "Quel est votre nom ?", placeholder: "Jean Dupont *", type: "text", required: true, autoComplete: "name" },
   { name: "email", label: "Votre adresse e-mail ?", placeholder: "jean@dupont.fr *", type: "email", required: true, autoComplete: "email" },
   { name: "company", label: "Votre entreprise ou organisation ?", placeholder: "Entreprise, école, association…", type: "text", required: false, autoComplete: "organization" },
-  { name: "subject", label: "Qu'est-ce qui vous amène ?", placeholder: "Alternance, projet web, infra réseau…", type: "text", required: false, autoComplete: "off" },
 ] as const;
+
+const TOPICS = ["Alternance", "Stage", "Emploi", "Projet web", "Infra / réseau", "Autre"];
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [topics, setTopics] = useState<string[]>([]);
+
+  const toggleTopic = (topic: string) =>
+    setTopics((current) =>
+      current.includes(topic) ? current.filter((t) => t !== topic) : [...current, topic],
+    );
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,6 +37,7 @@ export function ContactForm() {
 
     if (res?.ok) {
       form.reset();
+      setTopics([]);
       setStatus("sent");
       return;
     }
@@ -69,6 +77,34 @@ export function ContactForm() {
           />
         </div>
       ))}
+
+      <div className={row}>
+        <span className="pt-1 font-mono text-xs text-muted">04</span>
+        <p id="contact-topics-label" className="text-lg sm:text-xl">
+          Qu&apos;est-ce qui vous amène ?
+        </p>
+        <div role="group" aria-labelledby="contact-topics-label" className="col-start-2 mt-5 flex flex-wrap gap-2">
+          {TOPICS.map((topic) => {
+            const active = topics.includes(topic);
+            return (
+              <button
+                key={topic}
+                type="button"
+                aria-pressed={active}
+                onClick={() => toggleTopic(topic)}
+                className={`cursor-pointer rounded-full border px-5 py-2.5 text-sm transition-colors ${
+                  active
+                    ? "border-accent bg-accent text-background"
+                    : "border-foreground/15 text-foreground/80 hover:border-foreground/40"
+                }`}
+              >
+                {topic}
+              </button>
+            );
+          })}
+        </div>
+        <input type="hidden" name="subject" value={topics.join(", ")} />
+      </div>
 
       <div className={`${row} border-b pb-24`}>
         <span className="pt-1 font-mono text-xs text-muted">05</span>

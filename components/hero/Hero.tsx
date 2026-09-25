@@ -27,11 +27,6 @@ export function Hero() {
 
         <div className="relative z-10 mt-auto pb-6">
           <HeroNameMarquee />
-          <Reveal delay={0.5} className="px-6 sm:px-10">
-            <p className="mt-2 max-w-md font-mono text-sm text-muted">
-              Technicien réseau &amp; télécom — Alternant BTS SIO
-            </p>
-          </Reveal>
         </div>
       </section>
     </div>
