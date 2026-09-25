@@ -6,9 +6,6 @@
   --anthracite: #232326;
   --muted: #8c8c90;
   --accent: #7c93b0;
-  /* Fill revealed inside the hero name under the cursor. Deliberately
-     higher-contrast than --foreground so the reveal reads clearly. */
-  --portrait-image: linear-gradient(135deg, #c9d6e6 0%, var(--accent) 55%, #3e4d63 100%);
 }
 
 /* Light surface for content sections (projects, about), Snellenberg-style:
