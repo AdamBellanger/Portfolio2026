@@ -191,9 +191,10 @@ export const projects: Project[] = [
     challenges:
       "Gérer des uploads jusqu'à 100 Mo derrière un reverse proxy (limites de taille côté nginx/Caddy), respecter les en-têtes X-Forwarded-* et exposer un endpoint de health check pour Docker.",
     result:
-      "Une app en un seul conteneur (front React compilé servi par Express), images persistées sur volume, prête à déployer derrière n'importe quel reverse proxy.",
+      "Une app en un seul conteneur (front React compilé servi par Express), images persistées sur volume, déployée en production sur son propre domaine, qrdrop.online.",
     highlights: ["Front + API TypeScript", "Un conteneur, un volume", "Health check intégré"],
     repoUrl: "https://github.com/AdamBellanger/Qrcode",
+    demoUrl: "https://qrdrop.online",
   },
   {
     slug: "studio-landing-pages",
