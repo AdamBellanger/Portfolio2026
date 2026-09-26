@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { Inter, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { SiteNav } from "@/components/layout/SiteNav";
@@ -61,6 +62,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
 }
 
 export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
+  // Rendered per request: the CSP nonce (proxy.ts) must be fresh every time.
+  await connection();
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 

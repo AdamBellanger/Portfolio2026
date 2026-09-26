@@ -15,8 +15,30 @@ import {
 // 2. Public URLs are rewritten onto the internal app/[lang] tree
 //    (/projets → /fr/projets, /en/projects → /en/projets).
 // 3. Internal-looking URLs (/fr/…, /en/projets) redirect to their public form.
+// 4. Every page response gets a nonce-based Content-Security-Policy.
 
 const BOT = /bot|crawl|spider|slurp|facebookexternalhit|embedly|preview|lighthouse/i;
+
+// Strict Content-Security-Policy: only scripts carrying this request's nonce
+// run (Next.js adds it to its own tags), plus what they load ('strict-dynamic').
+// Styles keep 'unsafe-inline' because animations write inline style attributes,
+// which nonces can't cover.
+function contentSecurityPolicy(nonce: string) {
+  const dev = process.env.NODE_ENV === "development";
+  return [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${dev ? " 'unsafe-eval'" : ""}`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
@@ -52,7 +74,17 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  const response = NextResponse.rewrite(new URL(internalPath(pathname) + search, request.url));
+  // Next.js reads the nonce from the request's CSP header while rendering.
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  const csp = contentSecurityPolicy(nonce);
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("Content-Security-Policy", csp);
+  requestHeaders.set("x-nonce", nonce);
+
+  const response = NextResponse.rewrite(new URL(internalPath(pathname) + search, request.url), {
+    request: { headers: requestHeaders },
+  });
+  response.headers.set("Content-Security-Policy", csp);
   response.headers.set("Vary", "Accept-Language, Cookie");
   return response;
 }
