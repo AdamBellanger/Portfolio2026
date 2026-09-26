@@ -4,6 +4,8 @@ import { ImageResponse } from "next/og";
 import { getProject, projects } from "@/content/projects";
 import { techIcons } from "@/content/tech-icons";
 import { luminance } from "@/lib/color";
+import { getDictionary } from "@/content/i18n/ui";
+import type { Locale } from "@/lib/i18n";
 import { projectAccent } from "@/lib/previews";
 
 // One link preview per case study (LinkedIn, Discord…), built at build time
@@ -21,10 +23,12 @@ const MAX_TECHS = 5;
 export default async function ProjectOpenGraphImage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ lang: string; slug: string }>;
 }) {
-  const { slug } = await params;
-  const project = getProject(slug);
+  const { lang, slug } = await params;
+  const locale = lang as Locale;
+  const t = getDictionary(locale);
+  const project = getProject(slug, locale);
   const clash = await readFile(path.join(process.cwd(), "assets/fonts/ClashDisplay-Medium.ttf"));
   if (!project) return new Response("Not found", { status: 404 });
 
@@ -59,7 +63,7 @@ export default async function ProjectOpenGraphImage({
             <div style={{ width: 12, height: 12, borderRadius: 999, background: "#7c93b0" }} />
             adambellanger.pro
           </div>
-          <div style={{ display: "flex" }}>Projet {project.kind}</div>
+          <div style={{ display: "flex" }}>{t.meta.caseStudy} · {t.projects.kinds[project.kind]}</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>

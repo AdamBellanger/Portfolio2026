@@ -25,13 +25,13 @@ function Globe() {
   );
 }
 
-export function LocationBadge() {
+export function LocationBadge({ lines }: { lines: readonly string[] }) {
   return (
     <div className="inline-flex items-center gap-4 rounded-r-full bg-anthracite py-1.5 pl-6 pr-1.5 sm:gap-5 sm:pl-10">
       <p className="text-xs leading-snug">
-        Basé
+        {lines[0]}
         <br />
-        en France
+        {lines[1]}
       </p>
       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-muted/60 text-foreground">
         <Globe />

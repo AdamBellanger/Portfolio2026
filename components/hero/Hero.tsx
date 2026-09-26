@@ -3,15 +3,18 @@ import { HeroNameMarquee } from "@/components/hero/HeroNameMarquee";
 import { LocationBadge } from "@/components/hero/LocationBadge";
 import { Reveal } from "@/components/ui/Reveal";
 import portrait from "@/public/images/portrait.webp";
+import { getDictionary } from "@/content/i18n/ui";
+import type { Locale } from "@/lib/i18n";
 
-export function Hero() {
+export function Hero({ locale }: { locale: Locale }) {
+  const t = getDictionary(locale).hero;
   return (
     <div className="relative h-[180vh]">
       <section className="sticky top-0 flex h-screen flex-col overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,color-mix(in_srgb,var(--accent)_22%,transparent),transparent_70%)]" />
         <Image
           src={portrait}
-          alt="Portrait d'Adam Bellanger"
+          alt={t.portraitAlt}
           priority
           draggable={false}
           data-cursor-plain
@@ -21,7 +24,7 @@ export function Hero() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background via-background/70 to-transparent" />
 
         <Reveal delay={0.2} className="absolute left-0 top-[66%] z-10 -translate-y-1/2 sm:top-1/2">
-          <LocationBadge />
+          <LocationBadge lines={t.based} />
         </Reveal>
 
         <Reveal delay={0.35} className="absolute right-6 top-32 z-10 sm:right-10">
@@ -30,9 +33,9 @@ export function Hero() {
               ↘
             </span>
             <p className="font-display text-xl leading-tight text-foreground sm:text-2xl">
-              Développeur
+              {t.role[0]}
               <br />
-              full-stack &amp; réseau
+              {t.role[1]}
             </p>
           </div>
         </Reveal>

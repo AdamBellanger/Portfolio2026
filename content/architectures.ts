@@ -2,6 +2,9 @@
 // structure. A diagram is a left-to-right flow of columns; every column holds
 // one or more nodes, and arrows connect consecutive columns.
 
+import type { Locale } from "@/lib/i18n";
+import { architecturesEn } from "@/content/architectures.en";
+
 export type ArchNode = { label: string; detail?: string };
 export type Architecture = { columns: ArchNode[][]; note?: string };
 
@@ -209,3 +212,7 @@ export const architectures: Record<string, Architecture> = {
     note: "Tableaux de bord Chart.js, recherche en temps réel et pagination.",
   },
 };
+
+export function getArchitecture(slug: string, locale: Locale): Architecture | undefined {
+  return (locale === "en" ? architecturesEn : architectures)[slug];
+}

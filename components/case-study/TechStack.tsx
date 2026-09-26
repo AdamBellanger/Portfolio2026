@@ -12,7 +12,7 @@ function initials(name: string) {
   ).toUpperCase();
 }
 
-function TechPill({ name }: { name: string }) {
+function TechPill({ name, label }: { name: string; label: string }) {
   const icon = techIcons[name];
   const lum = icon ? luminance(icon.hex) : 0;
   // Pale logos (JavaScript, React…) sit on a dark chip, near-black ones
@@ -43,7 +43,7 @@ function TechPill({ name }: { name: string }) {
           </span>
         )}
       </span>
-      <span className="text-sm">{name}</span>
+      <span className="text-sm">{label}</span>
     </li>
   );
 }
@@ -53,7 +53,17 @@ function TechPill({ name }: { name: string }) {
  * each holding content-sized pills with the brand logo (Simple Icons) or a
  * monogram fallback.
  */
-export function TechStack({ stack }: { stack: string[] }) {
+export function TechStack({
+  stack,
+  categoryLabels,
+  techNames = {},
+}: {
+  stack: string[];
+  /** Display names for the (French) category keys. */
+  categoryLabels: Record<string, string>;
+  /** Translated display names for some stack items. */
+  techNames?: Record<string, string>;
+}) {
   return (
     <dl className="flex flex-col divide-y divide-foreground/10 border-y border-foreground/10">
       {groupStack(stack).map(({ category, items }) => (
@@ -62,12 +72,12 @@ export function TechStack({ stack }: { stack: string[] }) {
           className="grid gap-3 py-4 sm:grid-cols-[9rem_1fr] sm:items-start"
         >
           <dt className="font-mono text-[11px] uppercase tracking-widest text-muted sm:pt-3.5">
-            {category}
+            {categoryLabels[category] ?? category}
           </dt>
           <dd>
             <ul className="flex flex-wrap gap-2">
               {items.map((name) => (
-                <TechPill key={name} name={name} />
+                <TechPill key={name} name={name} label={techNames[name] ?? name} />
               ))}
             </ul>
           </dd>

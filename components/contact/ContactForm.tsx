@@ -3,18 +3,19 @@
 import { useState, type FormEvent } from "react";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { site } from "@/content/site";
+import { useLocale } from "@/lib/use-locale";
 
 const FIELDS = [
-  { name: "name", label: "Quel est votre nom ?", placeholder: "Jean Dupont *", type: "text", required: true, autoComplete: "name" },
-  { name: "email", label: "Votre adresse e-mail ?", placeholder: "jean@dupont.fr *", type: "email", required: true, autoComplete: "email" },
-  { name: "company", label: "Votre entreprise ou organisation ?", placeholder: "Entreprise, école, association…", type: "text", required: false, autoComplete: "organization" },
+  { name: "name", type: "text", required: true, autoComplete: "name" },
+  { name: "email", type: "email", required: true, autoComplete: "email" },
+  { name: "company", type: "text", required: false, autoComplete: "organization" },
 ] as const;
-
-const TOPICS = ["Alternance", "Stage", "Emploi", "Projet web", "Infra / réseau", "Autre"];
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
+  const { t: dict } = useLocale();
+  const t = dict.form;
   const [status, setStatus] = useState<Status>("idle");
   const [topics, setTopics] = useState<string[]>([]);
 
@@ -44,7 +45,7 @@ export function ContactForm() {
 
     // No webhook configured yet: hand over to the visitor's mail client.
     if (res?.status === 503) {
-      const subject = data.subject || `Contact de ${data.name}`;
+      const subject = data.subject || `${t.mailSubject} ${data.name}`;
       const body = `${data.message}\n\n${data.name}${data.company ? ` — ${data.company}` : ""}\n${data.email}`;
       window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       setStatus("idle");
@@ -64,7 +65,7 @@ export function ContactForm() {
         <div key={field.name} className={row}>
           <span className="pt-1 font-mono text-xs text-muted">{String(i + 1).padStart(2, "0")}</span>
           <label htmlFor={`contact-${field.name}`} className="text-lg sm:text-xl">
-            {field.label}
+            {t.fields[field.name].label}
           </label>
           <input
             id={`contact-${field.name}`}
@@ -72,7 +73,7 @@ export function ContactForm() {
             type={field.type}
             required={field.required}
             autoComplete={field.autoComplete}
-            placeholder={field.placeholder}
+            placeholder={t.fields[field.name].placeholder}
             className={input}
           />
         </div>
@@ -81,10 +82,10 @@ export function ContactForm() {
       <div className={row}>
         <span className="pt-1 font-mono text-xs text-muted">04</span>
         <p id="contact-topics-label" className="text-lg sm:text-xl">
-          Qu&apos;est-ce qui vous amène ?
+          {t.topicsLabel}
         </p>
         <div role="group" aria-labelledby="contact-topics-label" className="col-start-2 mt-5 flex flex-wrap gap-2">
-          {TOPICS.map((topic) => {
+          {t.topics.map((topic) => {
             const active = topics.includes(topic);
             return (
               <button
@@ -109,14 +110,14 @@ export function ContactForm() {
       <div className={`${row} border-b pb-24`}>
         <span className="pt-1 font-mono text-xs text-muted">05</span>
         <label htmlFor="contact-message" className="text-lg sm:text-xl">
-          Votre message
+          {t.message}
         </label>
         <textarea
           id="contact-message"
           name="message"
           required
           rows={5}
-          placeholder="Bonjour Adam, j'aimerais échanger à propos de… *"
+          placeholder={t.messagePlaceholder}
           className={`${input} resize-none`}
         />
       </div>
@@ -131,16 +132,16 @@ export function ContactForm() {
             disabled={status === "sending"}
             className="flex h-40 w-40 cursor-pointer items-center justify-center rounded-full bg-accent text-lg font-medium text-background transition-transform duration-300 hover:scale-105 disabled:opacity-60 sm:h-48 sm:w-48"
           >
-            {status === "sending" ? "Envoi…" : "Envoyer !"}
+            {status === "sending" ? t.sending : t.send}
           </button>
         </Magnetic>
       </div>
 
       <p aria-live="polite" className="mt-6 min-h-6 text-right text-sm">
-        {status === "sent" && <span className="text-accent">Message envoyé, merci ! Je vous réponds vite.</span>}
+        {status === "sent" && <span className="text-accent">{t.sent}</span>}
         {status === "error" && (
           <span className="text-red-300">
-            L&apos;envoi a échoué. Écrivez-moi directement à{" "}
+            {t.error}{" "}
             <a href={`mailto:${site.email}`} className="underline">
               {site.email}
             </a>

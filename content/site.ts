@@ -1,10 +1,8 @@
 // Single source for contact details and socials, used by the nav drawer,
-// the footer and the contact page.
+// the footer and the contact page. Translatable text lives in content/i18n/ui.ts.
 export const site = {
   name: "Adam Bellanger",
   url: "https://adambellanger.pro",
-  description:
-    "Portfolio d'Adam Bellanger : alternant administrateur systèmes & réseaux (BTS SIO SISR) et développeur full-stack. Téléphonie d'entreprise, infra réseau, React / Next.js et auto-hébergement.",
   email: "compteproadam.bellanger@gmail.com",
   location: "France",
   // Public Uptime Kuma status page. Leave statusSlug null until a status page

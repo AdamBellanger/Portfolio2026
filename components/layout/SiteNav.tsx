@@ -12,15 +12,10 @@ import {
 } from "framer-motion";
 import { useMagnetic } from "@/components/ui/Magnetic";
 import { site } from "@/content/site";
+import { href, type Route } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
 
-const links = [
-  { href: "/", label: "Accueil" },
-  { href: "/projets", label: "Projets" },
-  { href: "/a-propos", label: "À propos" },
-  { href: "/contact", label: "Contact" },
-];
-
-const topLinks = links.slice(1);
+const ROUTES: Route[] = ["home", "projects", "about", "contact"];
 
 // Header links slide up and fade out one after the other when the page scrolls.
 const HIDE_EASE = "ease-[cubic-bezier(0.16,1,0.3,1)]";
@@ -32,6 +27,10 @@ const socials = [
 
 export function SiteNav() {
   const pathname = usePathname();
+  const { locale, t: dict } = useLocale();
+  const t = dict.nav;
+  const links = ROUTES.map((route) => ({ href: href(locale, route), label: t[route] }));
+  const topLinks = links.slice(1);
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -129,7 +128,7 @@ export function SiteNav() {
         }`}
       >
         <Link
-          href="/"
+          href={href(locale, "home")}
           onClick={() => setOpen(false)}
           className={`font-display text-sm tracking-wide transition-[opacity,transform] duration-500 motion-reduce:transition-none ${HIDE_EASE} ${
             headerHidden ? "pointer-events-none -translate-y-4 opacity-0" : ""
@@ -138,7 +137,7 @@ export function SiteNav() {
           © Made by Adam Bellanger
         </Link>
         <nav
-          aria-label="Navigation principale"
+          aria-label={t.main}
           className={`hidden items-center gap-8 sm:flex ${
             headerHidden ? "pointer-events-none" : ""
           }`}
@@ -205,7 +204,7 @@ export function SiteNav() {
             />
           </span>
           <span className="sr-only">
-            {open ? "Fermer le menu" : "Ouvrir le menu"}
+            {open ? t.close : t.open}
           </span>
         </motion.button>
       </motion.div>
@@ -227,7 +226,7 @@ export function SiteNav() {
               ref={overlayRef}
               role="dialog"
               aria-modal="true"
-              aria-label="Navigation principale"
+              aria-label={t.main}
               initial={{ x: "100%" }}
               animate={{ x: "0%" }}
               exit={{ x: "100%" }}
@@ -236,7 +235,7 @@ export function SiteNav() {
             >
               <div>
                 <p className="font-mono text-xs uppercase tracking-widest text-muted">
-                  Navigation
+                  {t.heading}
                 </p>
                 <div className="mt-3 border-t border-foreground/10" />
                 <ul className="mt-8 flex flex-col gap-3">
@@ -265,7 +264,7 @@ export function SiteNav() {
               </div>
               <div>
                 <p className="font-mono text-xs uppercase tracking-widest text-muted">
-                  Socials
+                  {t.socials}
                 </p>
                 <div className="mt-3 border-t border-foreground/10" />
                 <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">

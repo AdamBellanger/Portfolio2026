@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
+import { getDictionary } from "@/content/i18n/ui";
+import { href, type Locale } from "@/lib/i18n";
 
 const buttonBase =
   "inline-flex cursor-pointer rounded-full px-8 py-4 transition-all duration-300";
@@ -11,21 +13,24 @@ export const secondaryButton = `${buttonBase} border border-foreground/20 hover:
 
 /** Shared layout for 404 / 500 pages: big code, terminal-style trace, actions. */
 export function ErrorScreen({
+  locale,
   code,
   title,
   message,
   terminal,
   actions,
 }: {
+  locale: Locale;
   code: string;
   title: string;
   message: string;
   terminal: string[];
   actions?: ReactNode;
 }) {
+  const t = getDictionary(locale).errors;
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 pb-24 pt-40 sm:px-10">
-      <p className="font-mono text-xs uppercase tracking-widest text-accent">Erreur {code}</p>
+      <p className="font-mono text-xs uppercase tracking-widest text-accent">{t.label} {code}</p>
       <SplitText
         text={code}
         className="mt-4 font-display text-[32vw] leading-[0.85] tracking-tight sm:text-[18rem]"
@@ -38,13 +43,13 @@ export function ErrorScreen({
             {actions ?? (
               <>
                 <Magnetic strength={0.25}>
-                  <Link href="/" className={primaryButton}>
-                    Retour à l&apos;accueil
+                  <Link href={href(locale, "home")} className={primaryButton}>
+                    {t.home}
                   </Link>
                 </Magnetic>
                 <Magnetic strength={0.25}>
-                  <Link href="/projets" className={secondaryButton}>
-                    Voir les projets
+                  <Link href={href(locale, "projects")} className={secondaryButton}>
+                    {t.projects}
                   </Link>
                 </Magnetic>
               </>

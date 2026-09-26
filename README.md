@@ -16,9 +16,19 @@ npm run lint
 | Quoi | Où |
 |---|---|
 | Email, socials, localisation, statut Uptime Kuma | `content/site.ts` |
-| Projets (études de cas) | `content/projects.ts` — `featured: true` = affiché sur l'accueil |
-| Compétences | `content/skills.ts` |
+| Projets (études de cas) | `content/projects.ts` — `featured: true` = affiché sur l'accueil ; version anglaise dans `content/projects.en.ts` |
+| Schémas d'architecture | `content/architectures.ts` + `content/architectures.en.ts` |
+| Page À propos (parcours, missions) | `content/about.ts` (fr + en) |
+| Textes de l'interface (menu, footer, formulaire…) | `content/i18n/ui.ts` (fr + en) |
+| Compétences | `content/skills.ts` (fr + en) |
 | CV | déposer `public/cv/CV-Adam-Bellanger.pdf` → le bouton apparaît au prochain build |
+
+### Langues
+
+Français à la racine (`/projets`), anglais sous `/en` (`/en/projects`). `proxy.ts`
+redirige vers `/en` à la première visite si le navigateur n'est pas en français ;
+le choix FR / EN du footer est mémorisé dans le cookie `lang` et passe avant la
+détection. Chaque page déclare ses versions (`hreflang`) et le sitemap liste les deux.
 
 ## Déploiement (Hetzner + Nginx Proxy Manager)
 

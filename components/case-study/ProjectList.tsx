@@ -4,10 +4,13 @@ import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ProjectCard } from "@/components/case-study/ProjectCard";
 import type { Project, ProjectKind } from "@/content/projects";
+import { getDictionary } from "@/content/i18n/ui";
+import type { Locale } from "@/lib/i18n";
 
 const FILTERS: ("Tous" | ProjectKind)[] = ["Tous", "Pro", "Perso", "Lab", "École"];
 
-export function ProjectList({ projects }: { projects: Project[] }) {
+export function ProjectList({ projects, locale }: { projects: Project[]; locale: Locale }) {
+  const t = getDictionary(locale).projects;
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("Tous");
   const reducedMotion = useReducedMotion();
   const visible =
@@ -17,7 +20,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
     <>
       <div
         role="group"
-        aria-label="Filtrer les projets"
+        aria-label={t.filterLabel}
         className="mt-4 flex flex-wrap gap-2"
       >
         {FILTERS.map((f) => {
@@ -39,7 +42,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                   : "border-foreground/15 hover:border-foreground/40"
               }`}
             >
-              {f}
+              {f === "Tous" ? t.all : t.kinds[f]}
               <sup className="ml-1 font-mono text-[10px] opacity-60">
                 {count}
               </sup>
@@ -67,7 +70,7 @@ export function ProjectList({ projects }: { projects: Project[] }) {
                 delay: Math.min(i, 6) * 0.05,
               }}
             >
-              <ProjectCard project={project} />
+              <ProjectCard project={project} locale={locale} />
             </motion.div>
           ))}
         </AnimatePresence>

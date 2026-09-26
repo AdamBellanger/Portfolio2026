@@ -1,3 +1,6 @@
+import type { Locale } from "@/lib/i18n";
+import { projectsEn } from "@/content/projects.en";
+
 export type ProjectKind = "Pro" | "Perso" | "Lab" | "École";
 
 export type Screenshot = {
@@ -357,8 +360,30 @@ export const projects: Project[] = [
   },
 ];
 
-export const featuredProjects = projects.filter((project) => project.featured);
+const english: Project[] = projects.map((project) => {
+  const text = projectsEn[project.slug];
+  if (!text) return project;
+  const { title, screenshotAlts, ...rest } = text;
+  return {
+    ...project,
+    ...rest,
+    title: title ?? project.title,
+    screenshots: project.screenshots?.map((shot, i) => ({
+      ...shot,
+      alt: screenshotAlts?.[i] ?? shot.alt,
+    })),
+  };
+});
 
-export function getProject(slug: string) {
-  return projects.find((project) => project.slug === slug);
+/** All case studies in the given language, in display order. */
+export function getProjects(locale: Locale): Project[] {
+  return locale === "en" ? english : projects;
+}
+
+export function getFeaturedProjects(locale: Locale) {
+  return getProjects(locale).filter((project) => project.featured);
+}
+
+export function getProject(slug: string, locale: Locale = "fr") {
+  return getProjects(locale).find((project) => project.slug === slug);
 }

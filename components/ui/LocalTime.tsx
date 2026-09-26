@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "@/lib/use-locale";
 
 /** Current time in Paris, rendered client-side only to avoid hydration mismatches. */
 export function LocalTime() {
+  const { t } = useLocale();
+  const numberLocale = t.numberLocale;
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
     const format = () =>
-      new Intl.DateTimeFormat("fr-FR", {
+      new Intl.DateTimeFormat(numberLocale, {
         hour: "2-digit",
         minute: "2-digit",
         timeZone: "Europe/Paris",
@@ -21,7 +24,7 @@ export function LocalTime() {
       clearTimeout(first);
       clearInterval(id);
     };
-  }, []);
+  }, [numberLocale]);
 
   return <span suppressHydrationWarning>{time ?? "--:--"}</span>;
 }

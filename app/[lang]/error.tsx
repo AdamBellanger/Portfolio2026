@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { ErrorScreen, primaryButton, secondaryButton } from "@/components/ui/ErrorScreen";
 import { Magnetic } from "@/components/ui/Magnetic";
+import { href } from "@/lib/i18n";
+import { useLocale } from "@/lib/use-locale";
 
 export default function ErrorPage({
   error,
@@ -12,15 +14,18 @@ export default function ErrorPage({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { locale, t } = useLocale();
+
   useEffect(() => {
     console.error(error);
   }, [error]);
 
   return (
     <ErrorScreen
+      locale={locale}
       code="500"
-      title="Le serveur a trébuché."
-      message="Une erreur inattendue s'est produite de mon côté. Réessayez dans un instant ; si ça persiste, écrivez-moi."
+      title={t.errors.serverTitle}
+      message={t.errors.serverMessage}
       terminal={[
         "$ curl -I adambellanger.pro",
         "HTTP/2 500 Internal Server Error",
@@ -29,18 +34,18 @@ export default function ErrorPage({
         "$ docker compose logs portfolio --tail 1",
         "portfolio  | Unhandled exception, request aborted",
         "",
-        "$ docker compose restart portfolio  # je m'en occupe",
+        t.errors.serverTerminalLast,
       ]}
       actions={
         <>
           <Magnetic strength={0.25}>
             <button type="button" onClick={reset} className={primaryButton}>
-              Réessayer
+              {t.errors.retry}
             </button>
           </Magnetic>
           <Magnetic strength={0.25}>
-            <Link href="/" className={secondaryButton}>
-              Retour à l&apos;accueil
+            <Link href={href(locale, "home")} className={secondaryButton}>
+              {t.errors.home}
             </Link>
           </Magnetic>
         </>

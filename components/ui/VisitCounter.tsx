@@ -5,7 +5,15 @@ import { useEffect, useState } from "react";
 const SESSION_KEY = "ab-visit-counted";
 
 /** Discreet footer stat: counts one visit per browser session. */
-export function VisitCounter({ titleClassName }: { titleClassName: string }) {
+export function VisitCounter({
+  title,
+  numberLocale,
+  titleClassName,
+}: {
+  title: string;
+  numberLocale: string;
+  titleClassName: string;
+}) {
   const [total, setTotal] = useState<number | null>(null);
 
   useEffect(() => {
@@ -34,8 +42,8 @@ export function VisitCounter({ titleClassName }: { titleClassName: string }) {
 
   return (
     <div>
-      <p className={titleClassName}>Visites</p>
-      <p className="mt-2 text-sm tabular-nums">{new Intl.NumberFormat("fr-FR").format(total)}</p>
+      <p className={titleClassName}>{title}</p>
+      <p className="mt-2 text-sm tabular-nums">{new Intl.NumberFormat(numberLocale).format(total)}</p>
     </div>
   );
 }

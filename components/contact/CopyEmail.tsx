@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 
-export function CopyEmail({ email }: { email: string }) {
+export function CopyEmail({
+  email,
+  copyLabel,
+  copiedLabel,
+}: {
+  email: string;
+  copyLabel: string;
+  copiedLabel: string;
+}) {
   const [copied, setCopied] = useState(false);
   const [user, domain] = email.split("@");
 
@@ -27,7 +35,7 @@ export function CopyEmail({ email }: { email: string }) {
         onClick={copy}
         className="cursor-pointer rounded-full border border-foreground/15 px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:border-accent hover:text-accent"
       >
-        <span aria-live="polite">{copied ? "Copié ✓" : "Copier l'adresse"}</span>
+        <span aria-live="polite">{copied ? copiedLabel : copyLabel}</span>
       </button>
     </div>
   );

@@ -2,18 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
+import { useLocale } from "@/lib/use-locale";
 
-const STATUS_TEXT = {
-  up: { label: "Services en ligne", dot: "bg-emerald-400" },
-  degraded: { label: "Incident en cours", dot: "bg-amber-400" },
-} as const;
+const STATUS_DOT = { up: "bg-emerald-400", degraded: "bg-amber-400" } as const;
 
 /**
  * Subtle live indicator fed by the public Uptime Kuma status page (via
  * /api/status). Renders nothing until site.statusSlug is configured.
  */
 export function ServerStatus({ title, titleClassName }: { title: string; titleClassName: string }) {
-  const [status, setStatus] = useState<keyof typeof STATUS_TEXT | null>(null);
+  const { t } = useLocale();
+  const [status, setStatus] = useState<keyof typeof STATUS_DOT | null>(null);
 
   useEffect(() => {
     if (!site.statusSlug) return;
@@ -30,7 +29,8 @@ export function ServerStatus({ title, titleClassName }: { title: string; titleCl
   }, []);
 
   if (!status) return null;
-  const { label, dot } = STATUS_TEXT[status];
+  const label = t.status[status];
+  const dot = STATUS_DOT[status];
 
   return (
     <div>

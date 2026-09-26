@@ -1,10 +1,12 @@
+import type { Locale } from "@/lib/i18n";
+
 export type SkillGroup = {
   title: string;
   description: string;
   items: string[];
 };
 
-export const skillGroups: SkillGroup[] = [
+const fr: SkillGroup[] = [
   {
     title: "Réseau & Télécom",
     description: "Le quotidien chez Socacom : installer, configurer, dépanner.",
@@ -79,3 +81,43 @@ export const skillGroups: SkillGroup[] = [
     items: ["Git / GitHub", "Playwright", "PyInstaller", "Chart.js", "XAMPP"],
   },
 ];
+
+// Same groups and tools; only titles, descriptions and generic terms change.
+const en: SkillGroup[] = [
+  {
+    title: "Networking & Telecom",
+    description: "Day to day at Socacom: installing, configuring, troubleshooting.",
+    items: fr[0].items.map(
+      (item) =>
+        ({
+          "Routeurs Huawei": "Huawei routers",
+          "Baies de brassage": "Patch panels & racks",
+          "Vidéosurveillance Hikvision": "Hikvision CCTV",
+          "Fibre FTTH / FTTO": "FTTH / FTTO fibre",
+          "Support SAV": "Customer support",
+        })[item] ?? item,
+    ),
+  },
+  {
+    title: "Systems, Cloud & DevOps",
+    description: "Windows and Linux servers, cloud, and my own production infrastructure.",
+    items: fr[1].items,
+  },
+  {
+    title: "Front-end",
+    description: "Polished, fast and accessible interfaces.",
+    items: fr[2].items,
+  },
+  {
+    title: "Back-end & Data",
+    description: "APIs, databases and business tools.",
+    items: fr[3].items,
+  },
+  {
+    title: "Tools",
+    description: "Everything around the code.",
+    items: fr[4].items,
+  },
+];
+
+export const skillGroups: Record<Locale, SkillGroup[]> = { fr, en };

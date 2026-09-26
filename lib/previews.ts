@@ -1,6 +1,8 @@
 import type { Project } from "@/content/projects";
 import { techIcons } from "@/content/tech-icons";
 import { luminance } from "@/lib/color";
+import { getDictionary } from "@/content/i18n/ui";
+import type { Locale } from "@/lib/i18n";
 
 export type ProjectPreview = {
   slug: string;
@@ -23,12 +25,13 @@ export function projectAccent(project: Project) {
 
 /** Hover-preview data for project lists, computed server-side so the brand
  *  icon table never ships to the browser. */
-export function buildPreviews(projects: Project[]): ProjectPreview[] {
+export function buildPreviews(projects: Project[], locale: Locale): ProjectPreview[] {
+  const kinds = getDictionary(locale).projects.kinds;
   return projects.map((project) => {
     return {
       slug: project.slug,
       title: project.title,
-      kind: project.kind,
+      kind: kinds[project.kind],
       stack: project.stack.slice(0, 3),
       image: project.screenshots?.find((shot) => shot.device === "desktop")
         ?.src,
