@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1
 
 # ---- deps: install node_modules from the lockfile ----
-FROM node:22-alpine AS deps
+FROM node:26-alpine AS deps
 WORKDIR /app
 RUN apk add --no-cache libc6-compat
 COPY package.json package-lock.json ./
 RUN npm ci
 
 # ---- build: produce the standalone Next.js server ----
-FROM node:22-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # ---- run: minimal image with only the standalone output ----
-FROM node:22-alpine AS run
+FROM node:26-alpine AS run
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
