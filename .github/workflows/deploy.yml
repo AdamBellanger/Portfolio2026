@@ -6,11 +6,13 @@ name: Build & deploy
 on:
   push:
     branches: [main]
+  # Dependabot and other PRs get the build check only, never a deploy.
+  pull_request:
   workflow_dispatch:
 
 # Never run two deploys at the same time; a newer push waits for the current one.
 concurrency:
-  group: deploy
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -32,6 +34,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production

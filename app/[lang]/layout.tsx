@@ -7,6 +7,7 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { Footer } from "@/components/layout/Footer";
 import { CursorFollower } from "@/components/ui/CursorFollower";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { ScrollBar } from "@/components/ui/ScrollBar";
 import { getDictionary } from "@/content/i18n/ui";
 import { getProjects } from "@/content/projects";
 import { site } from "@/content/site";
@@ -83,6 +84,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     >
       <body className="flex min-h-screen flex-col">
         <SmoothScroll />
+        <ScrollBar />
         <CursorFollower />
         <SiteNav />
         <PageTransition labels={labels}>

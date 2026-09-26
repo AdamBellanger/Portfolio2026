@@ -24,13 +24,22 @@ function rateLimited(ip: string) {
   return false;
 }
 
+// Largest legitimate payload is ~6 KB (field limits above); refuse anything
+// much bigger before parsing it.
+const MAX_BODY_BYTES = 16 * 1024;
+
 /**
  * Emails contact-form submissions to Adam (see lib/mailer.ts). Returns 503
  * when SMTP isn't configured so the client falls back to a mailto: link.
  */
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
-  if (!body) return Response.json({ error: "invalid_body" }, { status: 400 });
+  const raw = await request.text().catch(() => "");
+  if (raw.length > MAX_BODY_BYTES) return Response.json({ error: "too_large" }, { status: 413 });
+  let body: Record<string, unknown> | null = null;
+  try {
+    body = JSON.parse(raw) as Record<string, unknown>;
+  } catch {}
+  if (!body || typeof body !== "object") return Response.json({ error: "invalid_body" }, { status: 400 });
 
   // Honeypot: bots fill every field, humans never see this one.
   if (typeof body.website === "string" && body.website !== "") {

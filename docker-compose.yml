@@ -15,6 +15,18 @@ services:
       - portfolio-data:/app/data
     networks:
       - services_default
+    # Hardening: no privilege escalation, no Linux capabilities (port 3000
+    # needs none), bounded memory, rotated logs so they can't fill the disk.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   portfolio-data:

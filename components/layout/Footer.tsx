@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Avatar } from "@/components/ui/Avatar";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { SplitText } from "@/components/ui/SplitText";
@@ -10,7 +9,7 @@ import { ServerStatus } from "@/components/ui/ServerStatus";
 import { VisitCounter } from "@/components/ui/VisitCounter";
 import { site } from "@/content/site";
 import { href, LOCALE_COOKIE, locales, switchLocalePath, type Locale } from "@/lib/i18n";
-import { useLocale } from "@/lib/use-locale";
+import { useLocale, usePublicPathname } from "@/lib/use-locale";
 
 const LANGUAGE_NAMES: Record<Locale, string> = { fr: "Version française", en: "English version" };
 
@@ -23,7 +22,7 @@ const pill =
   "rounded-full border border-foreground/15 px-6 py-4 text-sm transition-colors hover:border-accent hover:text-accent sm:px-8 sm:py-5 sm:text-base";
 
 export function Footer() {
-  const pathname = usePathname();
+  const pathname = usePublicPathname();
   const { locale, t: dict } = useLocale();
   const t = dict.footer;
   const showCta = pathname !== href(locale, "contact");

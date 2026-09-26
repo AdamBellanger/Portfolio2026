@@ -25,6 +25,14 @@ html.cursor-none {
   cursor: none;
 }
 
+/* components/ui/ScrollBar.tsx replaces the native bar for mouse users. */
+html.custom-scrollbar {
+  scrollbar-width: none;
+}
+html.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

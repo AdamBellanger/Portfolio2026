@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   animate,
@@ -13,7 +12,7 @@ import {
 import { useMagnetic } from "@/components/ui/Magnetic";
 import { site } from "@/content/site";
 import { href, type Route } from "@/lib/i18n";
-import { useLocale } from "@/lib/use-locale";
+import { useLocale, usePublicPathname } from "@/lib/use-locale";
 
 const ROUTES: Route[] = ["home", "projects", "about", "contact"];
 
@@ -26,7 +25,7 @@ const socials = [
 ];
 
 export function SiteNav() {
-  const pathname = usePathname();
+  const pathname = usePublicPathname();
   const { locale, t: dict } = useLocale();
   const t = dict.nav;
   const links = ROUTES.map((route) => ({ href: href(locale, route), label: t[route] }));

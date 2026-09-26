@@ -30,6 +30,19 @@ export function href(locale: Locale, route: Route, slug?: string) {
   return slug ? `${base}/${slug}` : base;
 }
 
+/**
+ * Public form of a pathname. During server rendering Next.js reports the
+ * internal rewritten path (/fr/contact, /en/projets); in the browser it
+ * reports the real URL. Normalising both keeps server and client HTML equal.
+ */
+export function publicPath(pathname: string): string {
+  if (pathname === "/fr") return "/";
+  if (pathname.startsWith("/fr/")) return pathname.slice(3);
+  return pathname
+    .replace(/^\/en\/projets(?=\/|$)/, "/en/projects")
+    .replace(/^\/en\/a-propos(?=\/|$)/, "/en/about");
+}
+
 /** Language of a public pathname (/en…, everything else is French). */
 export function localeFromPath(pathname: string): Locale {
   return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "fr";

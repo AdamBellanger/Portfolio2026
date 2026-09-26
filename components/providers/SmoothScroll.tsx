@@ -4,6 +4,11 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 
+// The running instance, for other components that need to scroll the page
+// (e.g. the custom scrollbar) without fighting the smooth-scroll loop.
+let activeLenis: Lenis | null = null;
+export const getLenis = () => activeLenis;
+
 export function SmoothScroll() {
   const lenisRef = useRef<Lenis | null>(null);
   const pathname = usePathname();
@@ -16,6 +21,7 @@ export function SmoothScroll() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
     lenisRef.current = lenis;
+    activeLenis = lenis;
 
     let rafId: number;
     function raf(time: number) {
@@ -35,6 +41,7 @@ export function SmoothScroll() {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      activeLenis = null;
     };
   }, []);
 

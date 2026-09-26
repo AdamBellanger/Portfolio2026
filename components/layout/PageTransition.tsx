@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { usePublicPathname } from "@/lib/use-locale";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
@@ -27,7 +28,7 @@ export function PageTransition({
   /** Destination names keyed by public path, from the layout. */
   labels: Record<string, string>;
 }) {
-  const pathname = usePathname();
+  const pathname = usePublicPathname();
   const router = useRouter();
   const reducedMotion = useReducedMotion();
   const [target, setTarget] = useState<{ href: string; path: string; label: string } | null>(null);
