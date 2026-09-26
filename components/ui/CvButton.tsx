@@ -4,11 +4,15 @@ import { Magnetic } from "@/components/ui/Magnetic";
 import { getDictionary } from "@/content/i18n/ui";
 import type { Locale } from "@/lib/i18n";
 
-// Drop the PDF at public/cv/CV-Adam-Bellanger.pdf and the button appears.
-const CV_PATH = "/cv/CV-Adam-Bellanger.pdf";
+// One PDF per language in public/cv/; the button appears once the file exists.
+const CV_PATHS: Record<Locale, string> = {
+  fr: "/cv/CV-Adam-Bellanger.pdf",
+  en: "/cv/CV-Adam-Bellanger-EN.pdf",
+};
 
 export function CvButton({ locale, className = "" }: { locale: Locale; className?: string }) {
   const t = getDictionary(locale).cv;
+  const CV_PATH = CV_PATHS[locale];
   if (!existsSync(path.join(process.cwd(), "public", CV_PATH))) {
     // Dev-only reminder of where the PDF goes; nothing renders in production.
     if (process.env.NODE_ENV === "production") return null;

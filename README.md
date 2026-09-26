@@ -21,7 +21,7 @@ npm run lint
 | Page À propos (parcours, missions) | `content/about.ts` (fr + en) |
 | Textes de l'interface (menu, footer, formulaire…) | `content/i18n/ui.ts` (fr + en) |
 | Compétences | `content/skills.ts` (fr + en) |
-| CV | déposer `public/cv/CV-Adam-Bellanger.pdf` → le bouton apparaît au prochain build |
+| CV | `public/cv/CV-Adam-Bellanger.pdf` (fr) et `CV-Adam-Bellanger-EN.pdf` (en, généré depuis `assets/cv-en.html` : ouvrir dans Chrome → Imprimer → PDF, A4, marges aucune, graphiques d'arrière-plan) |
 
 ### Langues
 

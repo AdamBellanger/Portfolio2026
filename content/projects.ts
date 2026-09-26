@@ -223,6 +223,35 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "portfolio",
+    title: "Ce portfolio",
+    kind: "Perso",
+    pitch:
+      "Le site que vous lisez : Next.js 16, bilingue avec détection automatique de la langue, animations soignées, auto-hébergé en Docker sur mon serveur.",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Docker", "Nginx Proxy Manager", "GitHub Actions"],
+    context:
+      "Mon premier portfolio (une scène 3D Three.js) était lent et peu lisible. Je voulais un site qui assume mon double profil réseau/télécom et développement, rapide, accessible, et que je maîtrise de bout en bout : du code jusqu'au serveur qui l'héberge.",
+    role:
+      "Conception, développement et mise en production : direction artistique, contenu des études de cas, architecture, déploiement et maintenance.",
+    challenges:
+      "Des animations fluides (rideau de transition entre les pages, curseur contextuel, boutons magnétiques, défilement doux) sans sacrifier les performances ni l'accessibilité : tout est coupé si le visiteur préfère réduire les animations, et le site vise 90+ sur Lighthouse. Une version anglaise complète, avec détection de la langue du navigateur et des URL traduites, gérée par un proxy Next.js sans librairie. Un formulaire de contact qui envoie de vrais e-mails en SMTP, avec anti-spam. Et un défilement qui restait bloqué après une navigation, corrigé en observant la hauteur réelle de la page.",
+    result:
+      "Des pages pré-générées dans les deux langues, servies par un conteneur Docker léger derrière Nginx Proxy Manager, avec un compteur de visites auto-hébergé sans cookies, une image d'aperçu générée pour chaque projet et un build vérifié par GitHub Actions à chaque push.",
+    highlights: [
+      "FR / EN avec détection automatique, URL traduites et hreflang",
+      "Transitions de page et curseur contextuel, prefers-reduced-motion respecté",
+      "Docker standalone derrière Nginx Proxy Manager, sur mon serveur Hetzner",
+      "Lint et build vérifiés par GitHub Actions à chaque push",
+    ],
+    repoUrl: "https://github.com/AdamBellanger/Portfolio2026",
+    demoUrl: "https://adambellanger.pro",
+    screenshots: [
+      { src: "/projects/portfolio/desktop-1.webp", device: "desktop", alt: "Accueil du portfolio : portrait détouré et nom en grand qui défile" },
+      { src: "/projects/portfolio/desktop-2.webp", device: "desktop", alt: "Liste des projets en version anglaise, avec les filtres" },
+      { src: "/projects/portfolio/mobile.webp", device: "mobile", alt: "Accueil du portfolio sur mobile" },
+    ],
+  },
+  {
     slug: "docsdesk",
     title: "DocsDesk",
     kind: "Pro",
@@ -322,23 +351,6 @@ export const projects: Project[] = [
       "Une application 100 % navigateur, bilingue, avec barres de progression animées et descriptions personnalisées pour chaque trait.",
     highlights: ["60 questions, 5 dimensions", "FR / EN à tout moment", "Zéro dépendance"],
     repoUrl: "https://github.com/AdamBellanger/OutoffServiceBigFive",
-  },
-  {
-    slug: "portfolio-v1",
-    title: "Portfolio v1 (3D)",
-    kind: "Perso",
-    pitch:
-      "Mon premier portfolio, commencé en première année de BTS SIO : une scène 3D interactive Three.js en arrière-plan.",
-    stack: ["PHP", "JavaScript", "Three.js", "CSS3"],
-    context:
-      "Première version de mon portfolio, construite et enrichie au fil de ma première année de BTS SIO, avant la refonte actuelle.",
-    role: "Conception et développement solo.",
-    challenges:
-      "Intégrer une scène Three.js en arrière-plan sans framework ni bundler (import map via CDN), avec écran de démarrage, navigation en pilule animée, modales de projets et effets glassmorphism.",
-    result:
-      "Un site one-page complet et responsive. Il m'a surtout appris ce que je voulais changer : le site actuel repart de zéro, plus rapide et plus lisible.",
-    highlights: ["Scène 3D Three.js", "JavaScript vanilla", "L'ancêtre de ce site"],
-    repoUrl: "https://github.com/AdamBellanger/Portfolio",
   },
   {
     slug: "mancity-univers",

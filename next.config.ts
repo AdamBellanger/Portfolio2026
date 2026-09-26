@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // Don't advertise the framework in response headers.
   poweredByHeader: false,
+  // AVIF first (30-50 % lighter than WebP), WebP for older browsers.
+  images: { formats: ["image/avif", "image/webp"] },
   turbopack: {
     root: path.resolve(__dirname),
   },

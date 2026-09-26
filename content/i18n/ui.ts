@@ -280,7 +280,7 @@ const en: Dictionary = {
     mailSubject: "Contact from",
   },
   cv: {
-    download: "Download my résumé (PDF, in French)",
+    download: "Download my résumé (PDF)",
     devHint: "[dev] Résumé button: drop the PDF in",
   },
   errors: {

@@ -54,3 +54,17 @@ body {
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+/* Entrance for above-the-fold media: CSS only and transform only, so the
+   element is painted (and counted as LCP) immediately, before any JS runs. */
+@keyframes rise {
+  from {
+    transform: translateY(24px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-rise {
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+}

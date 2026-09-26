@@ -169,6 +169,30 @@ export const projectsEn: Record<string, ProjectTranslation> = {
     ],
     screenshotAlts: ["PolyTrack sign-in page", "PolyTrack on mobile"],
   },
+  portfolio: {
+    title: "This portfolio",
+    pitch:
+      "The site you're reading: Next.js 16, bilingual with automatic language detection, polished animations, self-hosted in Docker on my own server.",
+    context:
+      "My first portfolio (a Three.js 3D scene) was slow and hard to read. I wanted a site that owns my dual network/telecom and development profile, fast and accessible, and that I control end to end: from the code to the server it runs on.",
+    role:
+      "Design, development and production: art direction, case study content, architecture, deployment and maintenance.",
+    challenges:
+      "Smooth animations (page transition curtain, contextual cursor, magnetic buttons, smooth scrolling) without trading away performance or accessibility: everything turns off when visitors prefer reduced motion, and the site targets 90+ on Lighthouse. A complete English version with browser language detection and translated URLs, handled by a Next.js proxy with no library. A contact form that sends real emails over SMTP, with spam protection. And scrolling that got stuck after navigating, fixed by observing the page's real height.",
+    result:
+      "Pages pre-rendered in both languages, served by a lightweight Docker container behind Nginx Proxy Manager, with a cookie-free self-hosted visit counter, a generated preview image for each project and a build checked by GitHub Actions on every push.",
+    highlights: [
+      "FR / EN with automatic detection, translated URLs and hreflang",
+      "Page transitions and contextual cursor, prefers-reduced-motion respected",
+      "Standalone Docker behind Nginx Proxy Manager, on my Hetzner server",
+      "Lint and build checked by GitHub Actions on every push",
+    ],
+    screenshotAlts: [
+      "Portfolio home page: cut-out portrait and large scrolling name",
+      "Project list in English, with filters",
+      "Portfolio home page on mobile",
+    ],
+  },
   docsdesk: {
     pitch:
       "Desktop app that converts any document to PDF and files it in the customer record of the Bob! Desk maintenance software.",
@@ -243,18 +267,6 @@ export const projectsEn: Record<string, ProjectTranslation> = {
     result:
       "A 100% in-browser, bilingual app with animated progress bars and tailored descriptions for each trait.",
     highlights: ["60 questions, 5 dimensions", "Switch FR / EN at any time", "Zero dependencies"],
-  },
-  "portfolio-v1": {
-    pitch:
-      "My first portfolio, started in my first year of BTS SIO: an interactive Three.js 3D scene in the background.",
-    context:
-      "The first version of my portfolio, built and extended throughout my first year of BTS SIO, before the current redesign.",
-    role: "Solo design and development.",
-    challenges:
-      "Integrating a Three.js background scene without a framework or bundler (import map via CDN), with a splash screen, an animated pill navigation, project modals and glassmorphism effects.",
-    result:
-      "A complete, responsive one-page site. Above all, it taught me what I wanted to change: the current site starts from scratch, faster and easier to read.",
-    highlights: ["Three.js 3D scene", "Vanilla JavaScript", "The ancestor of this site"],
   },
   "mancity-univers": {
     pitch:

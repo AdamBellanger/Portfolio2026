@@ -79,20 +79,25 @@ export function ScreenshotGallery({
 
   return (
     <div className="flex flex-col gap-6 lg:-mx-32">
+      {/* The first shot is usually the LCP: no JS-driven reveal on it. */}
       {hero && (secondary || !mobile) && (
-        <Reveal>
+        <div className="animate-rise">
           <BrowserFrame shot={hero} host={host} priority />
-        </Reveal>
+        </div>
       )}
       {mobile && (
         <div className="grid items-center gap-6 md:grid-cols-[1fr_auto]">
-          <Reveal delay={0.1}>
-            {secondary ? (
+          {secondary ? (
+            <Reveal delay={0.1}>
               <BrowserFrame shot={secondary} host={host} />
-            ) : (
-              hero && <BrowserFrame shot={hero} host={host} priority />
-            )}
-          </Reveal>
+            </Reveal>
+          ) : (
+            hero && (
+              <div className="animate-rise">
+                <BrowserFrame shot={hero} host={host} priority />
+              </div>
+            )
+          )}
           <Reveal delay={0.2}>
             <PhoneFrame shot={mobile} />
           </Reveal>

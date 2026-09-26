@@ -97,6 +97,22 @@ export const architecturesEn: Record<string, Architecture> = {
       [{ label: "Web dashboard", detail: "Docker container behind NPM" }],
     ],
   },
+  portfolio: {
+    columns: [
+      [{ label: "Browser", detail: "FR or EN from its language" }],
+      [{ label: "Nginx Proxy Manager", detail: "HTTPS, Let's Encrypt" }],
+      [{ label: "Next.js proxy", detail: "Language detection, URL rewriting" }],
+      [
+        { label: "Static pages", detail: "Pre-rendered in FR and EN" },
+        { label: "API routes", detail: "Contact form, visit counter" },
+      ],
+      [
+        { label: "Gmail SMTP", detail: "Contact form messages" },
+        { label: "Docker volume", detail: "Visit counter" },
+      ],
+    ],
+    note: "On every push to GitHub, GitHub Actions checks lint and build before deployment.",
+  },
   docsdesk: {
     columns: [
       [{ label: "Dropped files", detail: ".docx, .xlsx, .pdf, images" }],
@@ -143,16 +159,6 @@ export const architecturesEn: Record<string, Architecture> = {
       [{ label: "Results", detail: "5 traits, animated bars" }],
     ],
     note: "100% in the browser: no backend, no dependencies.",
-  },
-  "portfolio-v1": {
-    columns: [
-      [{ label: "index.php", detail: "One-page structure" }],
-      [
-        { label: "ui.js", detail: "Navigation, modals, splash screen" },
-        { label: "threescene.js", detail: "Three.js background scene" },
-      ],
-      [{ label: "Three.js", detail: "Loaded via import map (CDN)" }],
-    ],
   },
   "mancity-univers": {
     columns: [

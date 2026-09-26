@@ -28,6 +28,7 @@ const CATEGORY_OF: Record<string, TechCategory> = {
   "Tailwind CSS": "Front-end",
   Vite: "Front-end",
   "Chart.js": "Front-end",
+  "Framer Motion": "Front-end",
   GSAP: "Front-end",
   Zustand: "Front-end",
   "Three.js": "Front-end",
@@ -71,6 +72,7 @@ const CATEGORY_OF: Record<string, TechCategory> = {
   WireGuard: "Infra",
   "Fail2Ban": "Infra",
   n8n: "Infra",
+  "GitHub Actions": "Infra",
 };
 
 /** Stack split into non-empty groups, in display order, keeping item order. */

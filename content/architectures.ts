@@ -140,6 +140,22 @@ export const architectures: Record<string, Architecture> = {
       [{ label: "Dashboard web", detail: "Conteneur Docker derrière NPM" }],
     ],
   },
+  portfolio: {
+    columns: [
+      [{ label: "Navigateur", detail: "FR ou EN selon sa langue" }],
+      [{ label: "Nginx Proxy Manager", detail: "HTTPS, Let's Encrypt" }],
+      [{ label: "Proxy Next.js", detail: "Détection de langue, réécriture des URL" }],
+      [
+        { label: "Pages statiques", detail: "Pré-générées en FR et EN" },
+        { label: "Routes API", detail: "Formulaire, compteur de visites" },
+      ],
+      [
+        { label: "SMTP Gmail", detail: "Messages du formulaire" },
+        { label: "Volume Docker", detail: "Compteur de visites" },
+      ],
+    ],
+    note: "À chaque push sur GitHub, GitHub Actions vérifie le lint et le build avant le déploiement.",
+  },
   docsdesk: {
     columns: [
       [{ label: "Fichiers déposés", detail: ".docx, .xlsx, .pdf, images" }],
@@ -191,16 +207,6 @@ export const architectures: Record<string, Architecture> = {
       [{ label: "Résultats", detail: "5 traits, barres animées" }],
     ],
     note: "100 % navigateur : aucun backend, aucune dépendance.",
-  },
-  "portfolio-v1": {
-    columns: [
-      [{ label: "index.php", detail: "Structure one-page" }],
-      [
-        { label: "ui.js", detail: "Navigation, modales, splash screen" },
-        { label: "threescene.js", detail: "Scène Three.js en arrière-plan" },
-      ],
-      [{ label: "Three.js", detail: "Chargé par import map (CDN)" }],
-    ],
   },
   "mancity-univers": {
     columns: [
