@@ -9,6 +9,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CursorFollower } from "@/components/ui/CursorFollower";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { ScrollBar } from "@/components/ui/ScrollBar";
+import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 import { getDictionary } from "@/content/i18n/ui";
 import { getProjects } from "@/content/projects";
 import { site } from "@/content/site";
@@ -86,6 +87,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       className={`${clashDisplay.variable} ${inter.variable} ${geistMono.variable} antialiased`}
     >
       <body className="flex min-h-screen flex-col">
+        <PersonJsonLd locale={lang} />
         <SmoothScroll />
         <ScrollBar />
         <CursorFollower />
