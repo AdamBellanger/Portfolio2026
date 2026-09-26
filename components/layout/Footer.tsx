@@ -6,6 +6,7 @@ import { Magnetic } from "@/components/ui/Magnetic";
 import { SplitText } from "@/components/ui/SplitText";
 import { LocalTime } from "@/components/ui/LocalTime";
 import { ServerStatus } from "@/components/ui/ServerStatus";
+import { VisitCounter } from "@/components/ui/VisitCounter";
 import { site } from "@/content/site";
 
 const pill =
@@ -63,6 +64,7 @@ export function Footer() {
               <LocalTime />
             </p>
           </div>
+          <VisitCounter titleClassName="font-mono text-[10px] uppercase tracking-widest text-muted" />
           <ServerStatus title="Infra" titleClassName="font-mono text-[10px] uppercase tracking-widest text-muted" />
         </div>
         <div>

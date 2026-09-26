@@ -10,8 +10,14 @@ services:
     # over the shared network (Forward Hostname: portfolio, Port: 3000).
     expose:
       - "3000"
+    volumes:
+      # Visit counter (data/visits.json) survives rebuilds and redeploys.
+      - portfolio-data:/app/data
     networks:
       - services_default
+
+volumes:
+  portfolio-data:
 
 networks:
   services_default:

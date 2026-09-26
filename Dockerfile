@@ -23,7 +23,10 @@ ENV NODE_ENV=production \
     PORT=3000 \
     HOSTNAME=0.0.0.0
 
-RUN addgroup -S nodejs -g 1001 && adduser -S nextjs -u 1001 -G nodejs
+RUN addgroup -S nodejs -g 1001 && adduser -S nextjs -u 1001 -G nodejs \
+ && mkdir -p /app/data && chown nextjs:nodejs /app/data
+# Visit counter storage (docker-compose mounts a named volume here).
+ENV DATA_DIR=/app/data
 
 COPY --from=build --chown=nextjs:nodejs /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
