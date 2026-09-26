@@ -103,15 +103,14 @@ automatique actif (SSL Certificates → vérifier la date d'expiration).
 `subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`. Sans webhook
 configuré, le formulaire ouvre le client mail du visiteur.
 
-Côté n8n, le workflow prêt à importer (`ops/n8n-contact-workflow.local.json`)
+Côté n8n, le workflow prêt à importer (`ops/n8n-contact-workflow.local.json`,
+notification Discord)
 n'est pas versionné : le chemin du webhook fait office de secret.
 
 1. n8n → **Workflows → Import from File** → choisir le fichier.
-2. Nœud **Notification Ntfy** : vérifier l'URL du serveur Ntfy et le topic
-   (`portfolio-contact`), s'abonner à ce topic dans l'app Ntfy. Si le serveur
-   Ntfy exige un token, ajouter un header `Authorization: Bearer <token>`.
-3. *(Optionnel)* nœud **Discord** : coller l'URL d'un webhook Discord, puis
-   le réactiver (clic droit → Activate).
+2. Discord → paramètres d'un salon → **Intégrations → Webhooks → Nouveau webhook**,
+   copier son URL et la coller dans le nœud **Notification Discord**.
+3. Tester : **Execute workflow**, puis envoyer un POST sur la *Test URL*.
 4. **Activer** le workflow, copier la *Production URL* du nœud Webhook.
 5. Sur le serveur, dans `.env` : `CONTACT_WEBHOOK_URL=<production URL>`.
    Si n8n est sur le réseau `services_default`, l'adresse interne
