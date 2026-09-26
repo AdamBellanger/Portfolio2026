@@ -99,10 +99,21 @@ automatique actif (SSL Certificates → vérifier la date d'expiration).
 
 ### Formulaire de contact
 
-Sans configuration, « Envoyer » ouvre le client mail du visiteur avec le message
-pré-rempli. `POST /api/contact` peut aussi relayer le message en JSON (`name`,
-`email`, `company`, `subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`
-si cette variable est définie dans `.env`.
+Les messages du formulaire arrivent par e-mail (SMTP, Gmail par défaut) ; « Répondre »
+répond directement au visiteur. Anti-spam : champ piège + 5 messages max par
+visiteur et par quart d'heure.
+
+1. Compte Google → **Sécurité** → activer la **validation en deux étapes**.
+2. https://myaccount.google.com/apppasswords → créer un mot de passe
+   d'application (nom : « Portfolio »), copier les 16 caractères.
+3. Sur le serveur, dans `.env` :
+   ```
+   SMTP_USER=ton.adresse@gmail.com
+   SMTP_PASS=lesseizecaracteres
+   ```
+4. `./deploy.sh`, puis envoyer un message de test depuis /contact.
+
+Sans ces variables, « Envoyer » ouvre le client mail du visiteur (message pré-rempli).
 
 ### Statut de l'infra (footer)
 

@@ -14,7 +14,7 @@ const FIELDS = [
 type Status = "idle" | "sending" | "sent" | "error";
 
 export function ContactForm() {
-  const { t: dict } = useLocale();
+  const { locale, t: dict } = useLocale();
   const t = dict.form;
   const [status, setStatus] = useState<Status>("idle");
   const [topics, setTopics] = useState<string[]>([]);
@@ -33,7 +33,7 @@ export function ContactForm() {
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, locale }),
     }).catch(() => null);
 
     if (res?.ok) {
@@ -43,7 +43,7 @@ export function ContactForm() {
       return;
     }
 
-    // No webhook configured yet: hand over to the visitor's mail client.
+    // Email sending not configured on the server: hand over to the visitor's mail client.
     if (res?.status === 503) {
       const subject = data.subject || `${t.mailSubject} ${data.name}`;
       const body = `${data.message}\n\n${data.name}${data.company ? ` — ${data.company}` : ""}\n${data.email}`;
