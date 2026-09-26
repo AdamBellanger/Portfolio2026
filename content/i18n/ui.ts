@@ -102,7 +102,7 @@ const fr = {
     infraStatus: "Statut de l'infra",
     availability: "Disponibilité",
     availabilityText:
-      "En alternance BTS SIO. Ouvert aux projets web, infra et aux opportunités après le diplôme.",
+      "Fin de BTS SIO en septembre 2027, avec l'objectif d'une licence puis d'un master en cybersécurité (bac+5). D'ici là, ouvert aux stages, à l'alternance et aux projets web ou infra.",
     copy: "Copier l'adresse",
     copied: "Copié ✓",
   },
@@ -256,7 +256,7 @@ const en: Dictionary = {
     infraStatus: "Infra status",
     availability: "Availability",
     availabilityText:
-      "Currently an apprentice (French BTS SIO). Open to web and infrastructure projects, and to opportunities after graduation.",
+      "Finishing my BTS SIO (network & systems diploma) in September 2027, then aiming for a Bachelor's and a Master's in cybersecurity. Open to internships, apprenticeships and web or infrastructure projects until then.",
     copy: "Copy address",
     copied: "Copied ✓",
   },

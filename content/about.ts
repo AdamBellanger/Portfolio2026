@@ -19,9 +19,9 @@ type About = {
 
 const fr: About = {
   title: "À propos",
-  lead: "Technicien réseau & télécom le jour, développeur full-stack le reste du temps. Je ne choisis pas entre les deux : c'est justement ce croisement qui me rend utile.",
+  lead: "En apprentissage chez Socacom (BTS SIO), je fais de la téléphonie d'entreprise et de l'administration réseau. À côté, je développe des applications web. Les deux métiers se croisent plus souvent qu'on ne le croit.",
   aside:
-    "Je comprends ce qui se passe sous le code (VLAN, SIP, pare-feu, DNS) et je sais construire l'outil qui manque au-dessus. Mes projets partent souvent d'un vrai problème de terrain.",
+    "Configurer un VLAN, dépanner un trunk SIP, écrire une API : je fais les trois. Mes projets partent presque toujours d'un besoin réel, rencontré au travail ou chez moi.",
   journey: "Parcours",
   timeline: [
     {
@@ -88,9 +88,9 @@ const fr: About = {
 
 const en: About = {
   title: "About",
-  lead: "Network & telecom technician by day, full-stack developer the rest of the time. I don't pick one over the other: that overlap is exactly what makes me useful.",
+  lead: "I'm a network & telecom apprentice at Socacom (BTS SIO), and I build web applications on the side. The two jobs overlap more than you'd expect.",
   aside:
-    "I understand what happens beneath the code (VLANs, SIP, firewalls, DNS) and I can build the missing tool on top. My projects usually start from a real problem in the field.",
+    "Configuring a VLAN, troubleshooting a SIP trunk, writing an API: I do all three. My projects almost always start from a real need, usually one I ran into at work or at home.",
   journey: "Background",
   timeline: [
     {
