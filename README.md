@@ -46,6 +46,41 @@ Mise à jour (pull, rebuild, redémarrage, nettoyage des anciennes images, véri
 ./deploy.sh
 ```
 
+### Déploiement automatique (GitHub Actions)
+
+À chaque push sur `main`, `.github/workflows/deploy.yml` vérifie que le site
+compile (`npm ci`, lint, build) puis se connecte en SSH au serveur pour lancer
+`./deploy.sh`. Si le build échoue, rien n'est déployé.
+
+**1. Sur le serveur** (avec l'utilisateur qui lance d'habitude `./deploy.sh`) :
+
+```bash
+ssh-keygen -t ed25519 -N "" -C "github-deploy" -f ~/.ssh/github_deploy
+# Clé verrouillée : elle ne peut QUE lancer deploy.sh (pas de shell, pas de tunnel)
+echo "command=\"/var/www/portfolio/deploy.sh\",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty $(cat ~/.ssh/github_deploy.pub)" >> ~/.ssh/authorized_keys
+cat ~/.ssh/github_deploy          # clé privée -> secret DEPLOY_SSH_KEY
+ssh-keyscan -p 22 adambellanger.pro   # -> secret DEPLOY_KNOWN_HOSTS
+```
+
+**2. Sur GitHub** → repo → *Settings → Secrets and variables → Actions* :
+
+| Secret | Valeur |
+| --- | --- |
+| `DEPLOY_SSH_KEY` | contenu de `~/.ssh/github_deploy` (BEGIN…END inclus) |
+| `DEPLOY_KNOWN_HOSTS` | sortie de `ssh-keyscan` |
+| `DEPLOY_HOST` | IP du serveur (ou `adambellanger.pro`) |
+| `DEPLOY_USER` | utilisateur SSH (celui de l'étape 1) |
+| `DEPLOY_PORT` | *(optionnel)* port SSH s'il n'est pas 22 |
+
+**3. Tester** : onglet *Actions* → *Build & deploy* → *Run workflow*. Ensuite,
+chaque `git push` déploie tout seul.
+
+Si SSH n'est joignable que via WireGuard, GitHub ne pourra pas s'y connecter :
+il faudra alors un autre déclencheur (webhook n8n, par exemple).
+
+Une fois validé : `rm ~/.ssh/github_deploy` sur le serveur (la clé privée
+n'est plus utile qu'à GitHub).
+
 ### SSL
 
 Dans Nginx Proxy Manager, le certificat Let's Encrypt doit couvrir
@@ -55,9 +90,24 @@ automatique actif (SSL Certificates → vérifier la date d'expiration).
 ### Formulaire de contact
 
 `POST /api/contact` relaie le message en JSON (`name`, `email`, `company`,
-`subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`. Côté n8n : un nœud
-**Webhook** (POST) suivi d'un envoi d'email ou d'une notification Ntfy.
-Sans webhook configuré, le formulaire ouvre le client mail du visiteur.
+`subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`. Sans webhook
+configuré, le formulaire ouvre le client mail du visiteur.
+
+Côté n8n, le workflow prêt à importer (`ops/n8n-contact-workflow.local.json`)
+n'est pas versionné : le chemin du webhook fait office de secret.
+
+1. n8n → **Workflows → Import from File** → choisir le fichier.
+2. Nœud **Notification Ntfy** : vérifier l'URL du serveur Ntfy et le topic
+   (`portfolio-contact`), s'abonner à ce topic dans l'app Ntfy. Si le serveur
+   Ntfy exige un token, ajouter un header `Authorization: Bearer <token>`.
+3. *(Optionnel)* nœud **Discord** : coller l'URL d'un webhook Discord, puis
+   le réactiver (clic droit → Activate).
+4. **Activer** le workflow, copier la *Production URL* du nœud Webhook.
+5. Sur le serveur, dans `.env` : `CONTACT_WEBHOOK_URL=<production URL>`.
+   Si n8n est sur le réseau `services_default`, l'adresse interne
+   `http://n8n:5678/webhook/<chemin>` évite de repasser par Internet.
+6. `docker compose up -d` pour recharger la variable, puis envoyer un
+   message de test depuis /contact.
 
 ### Statut de l'infra (footer)
 
