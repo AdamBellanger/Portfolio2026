@@ -1,5 +1,7 @@
 # Weekly dependency updates as pull requests; each one is built by CI before
 # it can be merged. Minor and patch npm updates are grouped into a single PR.
+# Major versions (TypeScript, ESLint, Node…) usually need code changes, so
+# they are upgraded by hand rather than proposed automatically.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -9,6 +11,9 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 5
 
   - package-ecosystem: github-actions
@@ -20,3 +25,7 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # Stay on the Node LTS line; move to the next LTS deliberately.
+    ignore:
+      - dependency-name: node
+        update-types: ["version-update:semver-major"]
