@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { Avatar } from "@/components/ui/Avatar";
 import { CopyEmail } from "@/components/contact/CopyEmail";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
@@ -18,6 +19,9 @@ export default function ContactPage() {
   return (
     <section className="mx-auto grid w-full max-w-6xl gap-x-20 px-6 pb-32 pt-40 sm:px-10 sm:pt-48 lg:grid-cols-[1fr_19rem]">
       <div>
+        <Reveal>
+          <Avatar className="mb-8 h-20 w-20 sm:h-24 sm:w-24" />
+        </Reveal>
         <SplitText
           text="Travaillons ensemble"
           className="max-w-3xl font-display text-6xl leading-[0.95] sm:text-8xl"

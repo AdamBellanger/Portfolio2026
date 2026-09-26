@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Avatar } from "@/components/ui/Avatar";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { SplitText } from "@/components/ui/SplitText";
 import { LocalTime } from "@/components/ui/LocalTime";
@@ -20,13 +21,16 @@ export function Footer() {
     <footer className="mt-auto bg-anthracite">
       {showCta && (
         <div className="mx-auto w-full max-w-6xl px-6 pt-28 sm:px-10 sm:pt-36">
-          <SplitText
-            as="h2"
-            inView
-            delay={0}
-            text="Travaillons ensemble"
-            className="font-display text-5xl leading-none sm:text-8xl"
-          />
+          <div className="flex items-center gap-5 sm:gap-8">
+            <Avatar className="h-14 w-14 sm:h-24 sm:w-24" />
+            <SplitText
+              as="h2"
+              inView
+              delay={0}
+              text="Travaillons ensemble"
+              className="font-display text-5xl leading-none sm:text-8xl"
+            />
+          </div>
 
           <div className="relative mt-20 border-t border-foreground/15 sm:mt-24">
             <Magnetic className="absolute right-6 top-0 -translate-y-1/2 sm:right-[12%]">
