@@ -6,7 +6,11 @@ export type ProjectKind = "Pro" | "Perso" | "Lab" | "École";
 export type Screenshot = {
   src: string;
   alt: string;
-  device: "desktop" | "mobile";
+  /** desktop = website in a browser frame, app = desktop software window. */
+  device: "desktop" | "mobile" | "app";
+  /** Pixel size, for app captures (browser/phone captures use fixed sizes). */
+  width?: number;
+  height?: number;
 };
 
 export type Project = {
@@ -52,6 +56,15 @@ export const projects: Project[] = [
       "Livré en .exe Windows autonome (PyInstaller + pywebview)",
     ],
     repoUrl: "https://github.com/AdamBellanger/TeleDesk",
+    screenshots: [
+      {
+        src: "/projects/teledesk/app-1.webp",
+        device: "app",
+        width: 1626,
+        height: 1035,
+        alt: "Fenêtre principale de TéléDesk : dépôt du fichier Excel, choix du client, compteurs d'import et journal",
+      },
+    ],
   },
   {
     slug: "infra-hetzner",

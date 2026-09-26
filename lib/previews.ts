@@ -33,7 +33,7 @@ export function buildPreviews(projects: Project[], locale: Locale): ProjectPrevi
       title: project.title,
       kind: kinds[project.kind],
       stack: project.stack.slice(0, 3),
-      image: project.screenshots?.find((shot) => shot.device === "desktop")
+      image: project.screenshots?.find((shot) => shot.device !== "mobile")
         ?.src,
       accent: projectAccent(project),
     };

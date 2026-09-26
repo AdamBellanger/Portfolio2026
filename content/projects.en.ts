@@ -30,6 +30,9 @@ export const projectsEn: Record<string, ProjectTranslation> = {
       "Bob! Desk HTTP client with auth, retries and pagination",
       "Shipped as a standalone Windows .exe (PyInstaller + pywebview)",
     ],
+    screenshotAlts: [
+      "TéléDesk main window: Excel file drop zone, customer picker, import counters and log",
+    ],
   },
   "infra-hetzner": {
     title: "Hetzner infra / Homelab",
