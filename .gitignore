@@ -44,5 +44,3 @@ next-env.d.ts
 # visit counter (local dev)
 /data/
 
-# Local ops files (contain private webhook paths)
-*.local.json

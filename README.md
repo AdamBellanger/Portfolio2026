@@ -39,7 +39,7 @@ Le site tourne dans un conteneur Next.js `standalone`, sur le réseau Docker
 # sur le serveur
 git clone https://github.com/AdamBellanger/Portfolio2026.git portfolio
 cd portfolio
-cp .env.example .env          # renseigner CONTACT_WEBHOOK_URL (webhook n8n)
+cp .env.example .env          # variables optionnelles (voir Formulaire de contact)
 docker compose up -d --build
 ```
 
@@ -86,7 +86,7 @@ ssh-keyscan -p 22 adambellanger.pro   # -> secret DEPLOY_KNOWN_HOSTS
 chaque `git push` déploie tout seul.
 
 Si SSH n'est joignable que via WireGuard, GitHub ne pourra pas s'y connecter :
-il faudra alors un autre déclencheur (webhook n8n, par exemple).
+il faudra alors un autre déclencheur.
 
 Une fois validé : `rm ~/.ssh/github_deploy` sur le serveur (la clé privée
 n'est plus utile qu'à GitHub).
@@ -99,24 +99,10 @@ automatique actif (SSL Certificates → vérifier la date d'expiration).
 
 ### Formulaire de contact
 
-`POST /api/contact` relaie le message en JSON (`name`, `email`, `company`,
-`subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`. Sans webhook
-configuré, le formulaire ouvre le client mail du visiteur.
-
-Côté n8n, le workflow prêt à importer (`ops/n8n-contact-workflow.local.json`,
-notification Discord)
-n'est pas versionné : le chemin du webhook fait office de secret.
-
-1. n8n → **Workflows → Import from File** → choisir le fichier.
-2. Discord → paramètres d'un salon → **Intégrations → Webhooks → Nouveau webhook**,
-   copier son URL et la coller dans le nœud **Notification Discord**.
-3. Tester : **Execute workflow**, puis envoyer un POST sur la *Test URL*.
-4. **Activer** le workflow, copier la *Production URL* du nœud Webhook.
-5. Sur le serveur, dans `.env` : `CONTACT_WEBHOOK_URL=<production URL>`.
-   Si n8n est sur le réseau `services_default`, l'adresse interne
-   `http://n8n:5678/webhook/<chemin>` évite de repasser par Internet.
-6. `docker compose up -d` pour recharger la variable, puis envoyer un
-   message de test depuis /contact.
+Sans configuration, « Envoyer » ouvre le client mail du visiteur avec le message
+pré-rempli. `POST /api/contact` peut aussi relayer le message en JSON (`name`,
+`email`, `company`, `subject`, `message`, `sentAt`) vers `CONTACT_WEBHOOK_URL`
+si cette variable est définie dans `.env`.
 
 ### Statut de l'infra (footer)
 

@@ -4,8 +4,8 @@ const LIMITS = { name: 120, email: 200, company: 160, subject: 200, message: 500
 type Field = keyof typeof LIMITS;
 
 /**
- * Forwards contact-form submissions to CONTACT_WEBHOOK_URL (e.g. an n8n
- * webhook on the Hetzner box). Returns 503 when it isn't configured so the
+ * Forwards contact-form submissions to CONTACT_WEBHOOK_URL when it is set.
+ * Returns 503 when it isn't configured so the
  * client can fall back to a mailto: link.
  */
 export async function POST(request: Request) {
