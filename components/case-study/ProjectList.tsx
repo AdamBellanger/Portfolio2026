@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ProjectCard } from "@/components/case-study/ProjectCard";
 import type { Project, ProjectKind } from "@/content/projects";
 
-const FILTERS: ("Tous" | ProjectKind)[] = ["Tous", "Pro", "Perso", "École"];
+const FILTERS: ("Tous" | ProjectKind)[] = ["Tous", "Pro", "Perso", "Lab", "École"];
 
 export function ProjectList({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("Tous");

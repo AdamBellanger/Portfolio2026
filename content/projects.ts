@@ -1,4 +1,4 @@
-export type ProjectKind = "Pro" | "Perso" | "École";
+export type ProjectKind = "Pro" | "Perso" | "Lab" | "École";
 
 export type Screenshot = {
   src: string;
@@ -21,6 +21,8 @@ export type Project = {
   repoUrl?: string;
   demoUrl?: string;
   screenshots?: Screenshot[];
+  /** Reference table (numbering plan, VLAN plan…) shown after the diagram. */
+  table?: { title: string; columns: string[]; rows: string[][] };
 };
 
 export const projects: Project[] = [
@@ -95,6 +97,73 @@ export const projects: Project[] = [
       "Autocomplétion sur 1 700+ skins en cache",
     ],
     repoUrl: "https://github.com/AdamBellanger/FloatSniper",
+  },
+  {
+    slug: "lab-telephonie-pme",
+    title: "Téléphonie PME — 40 postes",
+    kind: "Lab",
+    pitch:
+      "Maquette complète d'une migration téléphonique : IPBX Alcatel-Lucent OXO Connect, trunk SIP opérateur, VLAN voix et 40 postes IP.",
+    stack: ["Alcatel OXO Connect", "OMC", "Trunk SIP", "VLAN 802.1Q", "LLDP-MED", "PoE+", "QoS DSCP", "FortiGate"],
+    context:
+      "Scénario : une PME de 40 salariés sur deux étages, avec un vieil autocommutateur en fin de vie et des lignes Numéris vouées à disparaître avec la fermeture du réseau cuivre. Objectif : passer à la téléphonie IP sans changer de numéros, avec un accueil, des services joignables en direct et aucune coupure visible pour les clients.",
+    role:
+      "Projet Lab : dimensionnement, plan de numérotation, architecture réseau de la voix et procédure de bascule, documentés comme pour une vraie mise en service. C'est le type d'installation sur lequel j'interviens en alternance ; ce dossier la formalise de bout en bout.",
+    challenges:
+      "Dimensionner l'OXO Connect (châssis, cartes, licences IP et trunk SIP pour 8 communications simultanées) ; isoler la voix dans un VLAN dédié, poussé automatiquement aux postes via LLDP-MED ; garantir la qualité audio avec un marquage DSCP EF sur le flux RTP et CS3 sur la signalisation, respecté de bout en bout ; désactiver le SIP ALG du pare-feu, cause classique d'audio unidirectionnel ; et préparer une bascule hors heures ouvrées avec portabilité des numéros et plan de retour arrière.",
+    result:
+      "Un dossier de mise en service complet : schéma d'architecture, plan de numérotation, adressage de la voix, configuration de l'OXO (SVI, groupements, horaires jour/nuit, messagerie) et procédure de bascule. Réutilisable tel quel comme base pour une installation réelle.",
+    highlights: [
+      "40 postes IP en PoE+, VLAN voix attribué automatiquement (LLDP-MED)",
+      "Trunk SIP 8 canaux, SDA conservées par portabilité",
+      "Accueil : pré-décroché, SVI à 3 choix, débordement vers un groupement",
+      "Bascule hors heures ouvrées avec retour arrière documenté",
+    ],
+    table: {
+      title: "Plan de numérotation",
+      columns: ["Numéro", "Affectation", "Comportement"],
+      rows: [
+        ["Standard", "SDA principale", "Pré-décroché, puis SVI : 1 Commercial · 2 Technique · 3 Compta"],
+        ["201 – 222", "Postes du 1er étage (22)", "SDA individuelle par poste"],
+        ["301 – 318", "Postes du 2e étage (18)", "SDA individuelle par poste"],
+        ["500", "Groupement Accueil", "Sonnerie simultanée, débordement vers 510 après 20 s"],
+        ["510", "Groupement Commercial", "Appel tournant, messagerie après 30 s"],
+        ["0", "Prise de ligne", "Sortie vers le trunk SIP"],
+      ],
+    },
+  },
+  {
+    slug: "lab-reseau-pme",
+    title: "Réseau PME segmenté",
+    kind: "Lab",
+    pitch:
+      "Maquette d'un réseau d'entreprise sécurisé : FortiGate, switches Huawei, cinq VLAN cloisonnés, VPN IPsec et supervision.",
+    stack: ["FortiGate", "Huawei VRP", "VLAN 802.1Q", "LACP", "IPsec", "DHCP Snooping", "SNMP", "Grafana"],
+    context:
+      "Même PME fictive : 40 salariés, de la téléphonie IP, un Wi-Fi invités, des caméras et des commerciaux en déplacement. Au départ, un réseau « à plat » derrière la box opérateur : un poste infecté ou un invité curieux voit toutes les caméras et le serveur de fichiers.",
+    role:
+      "Projet Lab : plan d'adressage, découpage en VLAN, politique de filtrage, configuration des équipements et documentation d'exploitation. Ce sont les équipements et les réglages que je manipule en alternance.",
+    challenges:
+      "Cloisonner sans bloquer le travail : routage inter-VLAN porté par le FortiGate avec des règles explicites (les invités ne voient qu'Internet, les caméras ne parlent qu'à l'enregistreur, l'administration n'est joignable que depuis son VLAN) ; fiabiliser le lien cœur–pare-feu en agrégat LACP ; durcir les ports d'accès (DHCP snooping, protection BPDU, ports inutilisés désactivés) ; et offrir un accès distant propre aux itinérants en VPN IPsec IKEv2 avec FortiClient, plutôt qu'en VPN SSL, que Fortinet abandonne progressivement.",
+    result:
+      "Un réseau segmenté et documenté : plan d'adressage, matrice des flux autorisés, configurations sauvegardées et supervision SNMP des équipements dans Grafana (débit, état des ports, disponibilité). Chaque règle a une raison écrite, ce qui simplifie l'exploitation et le SAV.",
+    highlights: [
+      "5 VLAN cloisonnés, routage inter-VLAN filtré par le FortiGate",
+      "Lien cœur ↔ pare-feu en LACP (2 × 1 Gb/s)",
+      "Ports d'accès durcis : DHCP snooping, protection BPDU, ports inutilisés coupés",
+      "VPN IPsec IKEv2 pour les itinérants, supervision SNMP dans Grafana",
+    ],
+    table: {
+      title: "Plan d'adressage",
+      columns: ["VLAN", "Nom", "Réseau", "Accès autorisé"],
+      rows: [
+        ["10", "Data", "10.10.10.0/24", "Internet, serveur de fichiers, imprimantes"],
+        ["20", "Voix", "10.10.20.0/24", "IPBX et trunk SIP opérateur uniquement"],
+        ["30", "Invités", "10.10.30.0/24", "Internet uniquement, isolation des clients Wi-Fi"],
+        ["40", "Vidéo", "10.10.40.0/24", "Enregistreur (NVR) uniquement, pas d'Internet"],
+        ["99", "Admin", "10.10.99.0/24", "Interfaces d'administration des équipements"],
+      ],
+    },
   },
   {
     slug: "openwhisper",

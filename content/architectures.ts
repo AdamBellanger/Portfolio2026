@@ -81,6 +81,40 @@ export const architectures: Record<string, Architecture> = {
     ],
     note: "Authentification : bcrypt, Google OAuth, Steam OpenID et 2FA TOTP.",
   },
+  "lab-telephonie-pme": {
+    columns: [
+      [{ label: "Opérateur", detail: "Trunk SIP 8 canaux, SDA portées" }],
+      [{ label: "FortiGate", detail: "SIP ALG désactivé, règles vers l'opérateur" }],
+      [
+        {
+          label: "Switchs Huawei PoE+",
+          detail: "VLAN voix 20 via LLDP-MED, DSCP EF / CS3",
+        },
+      ],
+      [
+        { label: "OXO Connect", detail: "Licences IP, SVI, groupements, messagerie" },
+        { label: "40 postes IP", detail: "Bureaux + poste opérateur à l'accueil" },
+        { label: "Ports analogiques", detail: "Fax et alarme" },
+      ],
+    ],
+    note: "Postes et IPBX partagent le VLAN voix ; les PC restent sur le VLAN data, branchés derrière le switch intégré de chaque poste.",
+  },
+  "lab-reseau-pme": {
+    columns: [
+      [{ label: "Internet", detail: "Fibre FTTO + secours 4G" }],
+      [{ label: "FortiGate", detail: "Routage inter-VLAN, filtrage, VPN IPsec" }],
+      [{ label: "Switch cœur Huawei", detail: "Agrégat LACP vers le FortiGate" }],
+      [{ label: "Switchs d'accès PoE", detail: "Un par étage, trunks 802.1Q" }],
+      [
+        { label: "VLAN 10 · Data", detail: "Postes et serveur de fichiers" },
+        { label: "VLAN 20 · Voix", detail: "IPBX et téléphones" },
+        { label: "VLAN 30 · Invités", detail: "Wi-Fi, Internet seul" },
+        { label: "VLAN 40 · Vidéo", detail: "Caméras et NVR, isolés" },
+        { label: "VLAN 99 · Admin", detail: "Administration des équipements" },
+      ],
+    ],
+    note: "Télétravail : FortiClient en IPsec IKEv2. Supervision : SNMPv3 des switches et du FortiGate, remontée dans Grafana via Prometheus.",
+  },
   openwhisper: {
     columns: [
       [{ label: "Navigateur", detail: "Dépôt du fichier audio" }],

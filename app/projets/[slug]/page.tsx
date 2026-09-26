@@ -75,6 +75,16 @@ export default async function ProjectPage({
             className="mt-4 font-display text-5xl sm:text-7xl"
           />
           <p className="mt-4 max-w-lg text-lg text-muted">{project.pitch}</p>
+          {project.kind === "Lab" && (
+            <p className="mt-6 inline-flex max-w-lg items-start gap-3 rounded-2xl border border-dashed border-foreground/25 px-4 py-3 text-sm text-muted">
+              <span className="mt-0.5 font-mono text-[10px] uppercase tracking-widest text-accent">
+                Lab
+              </span>
+              Maquette conçue et documentée de bout en bout, sur le modèle des
+              installations que je réalise en alternance. Ce n&apos;est pas une
+              intervention client.
+            </p>
+          )}
         </Reveal>
 
         {(project.repoUrl || project.demoUrl) && (
@@ -137,6 +147,57 @@ export default async function ProjectPage({
             </h2>
             <div className="mt-4">
               <ArchitectureDiagram architecture={architecture} />
+            </div>
+          </Reveal>
+        )}
+
+        {project.table && (
+          <Reveal>
+            <h2 className="font-display text-2xl text-accent">
+              {project.table.title}
+            </h2>
+            <div
+              role="region"
+              aria-label={project.table.title}
+              tabIndex={0}
+              className="mt-4 overflow-x-auto rounded-2xl border border-foreground/10"
+            >
+              <table className="w-full min-w-[34rem] text-left text-sm">
+                <thead className="bg-foreground/[0.04] font-mono text-[11px] uppercase tracking-widest text-muted">
+                  <tr>
+                    {project.table.columns.map((column) => (
+                      <th
+                        key={column}
+                        scope="col"
+                        className="px-4 py-3 font-normal"
+                      >
+                        {column}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-foreground/10">
+                  {project.table.rows.map((row) => (
+                    <tr key={row[0]}>
+                      {row.map((cell, i) =>
+                        i === 0 ? (
+                          <th
+                            key={i}
+                            scope="row"
+                            className="whitespace-nowrap px-4 py-3 font-mono font-normal text-accent"
+                          >
+                            {cell}
+                          </th>
+                        ) : (
+                          <td key={i} className="px-4 py-3 text-foreground/85">
+                            {cell}
+                          </td>
+                        ),
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </Reveal>
         )}

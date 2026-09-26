@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { Skills } from "@/components/home/Skills";
@@ -7,6 +8,34 @@ import { CvButton } from "@/components/ui/CvButton";
 export const metadata: Metadata = {
   title: "À propos — Adam Bellanger",
 };
+
+// What a typical week at Socacom looks like, by type of mission.
+const missions = [
+  {
+    title: "Téléphonie d'entreprise",
+    text: "Installation et paramétrage d'IPBX Alcatel-Lucent OXO Connect : postes, groupements, SVI, messageries, horaires jour/nuit.",
+  },
+  {
+    title: "Centrex & trunks SIP",
+    text: "Mise en service de lignes Centrex UnyCX et de trunks SIP, portabilité des numéros, diagnostic des appels.",
+  },
+  {
+    title: "Réseau & sécurité",
+    text: "Configuration de switches Huawei et de pare-feu FortiGate : VLAN, PoE, règles de filtrage, accès distants.",
+  },
+  {
+    title: "Baies & câblage",
+    text: "Brassage, repérage et mise en baie des équipements, tests et remise en service des liens.",
+  },
+  {
+    title: "Vidéosurveillance",
+    text: "Installation d'enregistreurs et de caméras IP, paramétrage des accès distants.",
+  },
+  {
+    title: "SAV & support client",
+    text: "Diagnostic à distance ou sur site, suivi des interventions dans la GMAO, échanges directs avec les clients.",
+  },
+];
 
 const timeline = [
   {
@@ -64,19 +93,83 @@ export default function AProposPage() {
         </Reveal>
         <ol className="flex flex-col border-b border-foreground/10">
           {timeline.map((item, i) => (
-            <Reveal key={item.place} delay={i * 0.05}>
-              <li className="grid gap-3 border-t border-foreground/10 py-8 sm:grid-cols-[1fr_2fr] sm:gap-10">
-                <div>
-                  <p className="font-mono text-xs uppercase tracking-widest text-accent">
-                    {item.role}
-                  </p>
-                  <h3 className="mt-2 font-display text-xl">{item.place}</h3>
-                </div>
-                <p className="text-foreground/80">{item.text}</p>
-              </li>
+            <Reveal
+              key={item.place}
+              as="li"
+              delay={i * 0.05}
+              className="grid gap-3 border-t border-foreground/10 py-8 sm:grid-cols-[1fr_2fr] sm:gap-10"
+            >
+              <div>
+                <p className="font-mono text-xs uppercase tracking-widest text-accent">
+                  {item.role}
+                </p>
+                <h3 className="mt-2 font-display text-xl">{item.place}</h3>
+              </div>
+              <p className="text-foreground/80">{item.text}</p>
             </Reveal>
           ))}
         </ol>
+      </section>
+
+      <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 pb-32 sm:px-10">
+        <Reveal>
+          <p className="font-mono text-xs uppercase tracking-widest text-accent">
+            Socacom · depuis 2025
+          </p>
+          <h2 className="mt-2 font-display text-3xl sm:text-4xl">
+            En alternance, au quotidien
+          </h2>
+        </Reveal>
+        <ul className="grid gap-px overflow-hidden rounded-3xl border border-foreground/10 bg-foreground/10 sm:grid-cols-2 lg:grid-cols-3">
+          {missions.map((mission, i) => (
+            <Reveal
+              key={mission.title}
+              as="li"
+              delay={i * 0.04}
+              className="flex flex-col gap-3 bg-background p-6"
+            >
+              <span className="font-mono text-[11px] text-muted">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="font-display text-xl">{mission.title}</h3>
+              <p className="text-sm text-foreground/75">{mission.text}</p>
+            </Reveal>
+          ))}
+        </ul>
+        <Reveal>
+          <p className="text-muted">
+            Et quand un outil manque, je le développe :{" "}
+            <Link
+              href="/projets/teledesk"
+              className="text-foreground underline decoration-foreground/30 underline-offset-4 hover:text-accent"
+            >
+              TéléDesk
+            </Link>{" "}
+            et{" "}
+            <Link
+              href="/projets/docsdesk"
+              className="text-foreground underline decoration-foreground/30 underline-offset-4 hover:text-accent"
+            >
+              DocsDesk
+            </Link>{" "}
+            sont nés sur le terrain. Pour la partie réseau et téléphonie, deux
+            maquettes documentées :{" "}
+            <Link
+              href="/projets/lab-telephonie-pme"
+              className="text-foreground underline decoration-foreground/30 underline-offset-4 hover:text-accent"
+            >
+              téléphonie PME
+            </Link>{" "}
+            et{" "}
+            <Link
+              href="/projets/lab-reseau-pme"
+              className="text-foreground underline decoration-foreground/30 underline-offset-4 hover:text-accent"
+            >
+              réseau segmenté
+            </Link>
+            .
+          </p>
+        </Reveal>
       </section>
 
       <Skills />

@@ -7,6 +7,8 @@ export const TECH_CATEGORIES = [
   "Front-end",
   "Back-end",
   "Données",
+  "Téléphonie",
+  "Réseau",
   "Infra",
   "Outils & API",
 ] as const;
@@ -42,6 +44,21 @@ const CATEGORY_OF: Record<string, TechCategory> = {
   SQLite: "Données",
   PDO: "Données",
   Drizzle: "Données",
+
+  FortiGate: "Réseau",
+  "Huawei VRP": "Réseau",
+  "VLAN 802.1Q": "Réseau",
+  LACP: "Réseau",
+  IPsec: "Réseau",
+  "DHCP Snooping": "Réseau",
+  SNMP: "Réseau",
+  "LLDP-MED": "Réseau",
+  "PoE+": "Réseau",
+  "QoS DSCP": "Réseau",
+
+  "Alcatel OXO Connect": "Téléphonie",
+  OMC: "Téléphonie",
+  "Trunk SIP": "Téléphonie",
 
   Docker: "Infra",
   Nginx: "Infra",
