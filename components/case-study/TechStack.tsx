@@ -11,10 +11,13 @@ function initials(name: string) {
   ).toUpperCase();
 }
 
-/** Grid of technology cards with brand logos (Simple Icons), monogram fallback. */
+/**
+ * Technology cards with brand logos (Simple Icons), monogram fallback. Cards
+ * wrap and grow so every row fills the width, whatever the number of items.
+ */
 export function TechStack({ stack }: { stack: string[] }) {
   return (
-    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+    <ul className="flex flex-wrap gap-3">
       {stack.map((name) => {
         const icon = techIcons[name];
         const lum = icon ? luminance(icon.hex) : 0;
@@ -30,7 +33,7 @@ export function TechStack({ stack }: { stack: string[] }) {
         return (
           <li
             key={name}
-            className="flex items-center gap-3 rounded-2xl border border-foreground/10 bg-foreground/[0.03] p-2.5 pr-4 transition-colors hover:border-foreground/25"
+            className="flex min-w-0 flex-[1_1_150px] items-center gap-3 rounded-2xl border border-foreground/10 bg-foreground/[0.03] p-2.5 pr-4 transition-colors hover:border-foreground/25"
           >
             <span
               className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-sm ring-1 ring-foreground/5 ${chip}`}
