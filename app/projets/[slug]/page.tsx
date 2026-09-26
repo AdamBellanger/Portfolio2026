@@ -5,6 +5,10 @@ import { getProject, projects, type Project } from "@/content/projects";
 import { Reveal } from "@/components/ui/Reveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { Magnetic } from "@/components/ui/Magnetic";
+import { TechStack } from "@/components/case-study/TechStack";
+import { ArchitectureDiagram } from "@/components/case-study/ArchitectureDiagram";
+import { ScreenshotGallery } from "@/components/case-study/ScreenshotGallery";
+import { architectures } from "@/content/architectures";
 
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
@@ -20,12 +24,30 @@ export async function generateMetadata({
   return { title: project ? `${project.title} — Adam Bellanger` : "Projet" };
 }
 
-const SECTIONS: { key: keyof Project; label: string }[] = [
+type TextKey = "context" | "role" | "challenges" | "result";
+const BEFORE_DIAGRAM: { key: TextKey; label: string }[] = [
   { key: "context", label: "Contexte" },
   { key: "role", label: "Rôle" },
+];
+const AFTER_DIAGRAM: { key: TextKey; label: string }[] = [
   { key: "challenges", label: "Défis" },
   { key: "result", label: "Résultat" },
 ];
+
+function TextSection({
+  project,
+  sections,
+}: {
+  project: Project;
+  sections: typeof BEFORE_DIAGRAM;
+}) {
+  return sections.map(({ key, label }, i) => (
+    <Reveal key={key} delay={i * 0.05}>
+      <h2 className="font-display text-2xl text-accent">{label}</h2>
+      <p className="mt-3 text-foreground/90">{project[key]}</p>
+    </Reveal>
+  ));
+}
 
 export default async function ProjectPage({
   params,
@@ -36,6 +58,7 @@ export default async function ProjectPage({
   const project = getProject(slug);
   if (!project) notFound();
   const next = projects[(projects.indexOf(project) + 1) % projects.length];
+  const architecture = architectures[project.slug];
 
   return (
     <div className="theme-light flex flex-1 flex-col">
@@ -52,16 +75,6 @@ export default async function ProjectPage({
             className="mt-4 font-display text-5xl sm:text-7xl"
           />
           <p className="mt-4 max-w-lg text-lg text-muted">{project.pitch}</p>
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <li
-                key={tech}
-                className="rounded-full border border-foreground/10 px-3 py-1 font-mono text-xs text-muted"
-              >
-                {tech}
-              </li>
-            ))}
-          </ul>
         </Reveal>
 
         {(project.repoUrl || project.demoUrl) && (
@@ -96,12 +109,39 @@ export default async function ProjectPage({
           </Reveal>
         )}
 
-        {SECTIONS.map(({ key, label }, i) => (
-          <Reveal key={key} delay={i * 0.05}>
-            <h2 className="font-display text-2xl text-accent">{label}</h2>
-            <p className="mt-3 text-foreground/90">{project[key] as string}</p>
+        {project.screenshots && (
+          <section aria-label="Aperçu" className="flex flex-col gap-4">
+            <p className="font-mono text-xs uppercase tracking-widest text-muted">
+              Aperçu
+            </p>
+            <ScreenshotGallery
+              shots={project.screenshots}
+              url={project.demoUrl}
+            />
+          </section>
+        )}
+
+        <Reveal>
+          <h2 className="font-display text-2xl text-accent">Stack</h2>
+          <div className="mt-4">
+            <TechStack stack={project.stack} />
+          </div>
+        </Reveal>
+
+        <TextSection project={project} sections={BEFORE_DIAGRAM} />
+
+        {architecture && (
+          <Reveal className="lg:-mx-32">
+            <h2 className="font-display text-2xl text-accent lg:px-32">
+              Architecture
+            </h2>
+            <div className="mt-4">
+              <ArchitectureDiagram architecture={architecture} />
+            </div>
           </Reveal>
-        ))}
+        )}
+
+        <TextSection project={project} sections={AFTER_DIAGRAM} />
 
         <Reveal>
           <h2 className="font-display text-2xl text-accent">Points clés</h2>

@@ -10,13 +10,21 @@ const FILTERS: ("Tous" | ProjectKind)[] = ["Tous", "Pro", "Perso", "École"];
 export function ProjectList({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("Tous");
   const reducedMotion = useReducedMotion();
-  const visible = filter === "Tous" ? projects : projects.filter((p) => p.kind === filter);
+  const visible =
+    filter === "Tous" ? projects : projects.filter((p) => p.kind === filter);
 
   return (
     <>
-      <div role="group" aria-label="Filtrer les projets" className="mt-4 flex flex-wrap gap-2">
+      <div
+        role="group"
+        aria-label="Filtrer les projets"
+        className="mt-4 flex flex-wrap gap-2"
+      >
         {FILTERS.map((f) => {
-          const count = f === "Tous" ? projects.length : projects.filter((p) => p.kind === f).length;
+          const count =
+            f === "Tous"
+              ? projects.length
+              : projects.filter((p) => p.kind === f).length;
           if (count === 0) return null;
           const active = f === filter;
           return (
@@ -32,7 +40,9 @@ export function ProjectList({ projects }: { projects: Project[] }) {
               }`}
             >
               {f}
-              <sup className="ml-1 font-mono text-[10px] opacity-60">{count}</sup>
+              <sup className="ml-1 font-mono text-[10px] opacity-60">
+                {count}
+              </sup>
             </button>
           );
         })}
@@ -46,8 +56,16 @@ export function ProjectList({ projects }: { projects: Project[] }) {
               layout={!reducedMotion}
               initial={reducedMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reducedMotion ? undefined : { opacity: 0, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: Math.min(i, 6) * 0.05 }}
+              exit={
+                reducedMotion
+                  ? undefined
+                  : { opacity: 0, transition: { duration: 0.15 } }
+              }
+              transition={{
+                duration: 0.5,
+                ease: [0.16, 1, 0.3, 1],
+                delay: Math.min(i, 6) * 0.05,
+              }}
             >
               <ProjectCard project={project} />
             </motion.div>

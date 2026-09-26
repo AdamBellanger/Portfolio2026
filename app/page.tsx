@@ -6,6 +6,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { Skills } from "@/components/home/Skills";
 import { featuredProjects } from "@/content/projects";
+import { ProjectHoverPreview } from "@/components/case-study/ProjectHoverPreview";
+import { buildPreviews } from "@/lib/previews";
 
 export default function Home() {
   return (
@@ -19,13 +21,15 @@ export default function Home() {
               Projets récents
             </p>
           </Reveal>
-          <div className="flex flex-col border-b border-foreground/10">
-            {featuredProjects.map((project, i) => (
-              <Reveal key={project.slug} delay={i * 0.1}>
-                <ProjectCard project={project} />
-              </Reveal>
-            ))}
-          </div>
+          <ProjectHoverPreview previews={buildPreviews(featuredProjects)}>
+            <div className="flex flex-col border-b border-foreground/10">
+              {featuredProjects.map((project, i) => (
+                <Reveal key={project.slug} delay={i * 0.1}>
+                  <ProjectCard project={project} />
+                </Reveal>
+              ))}
+            </div>
+          </ProjectHoverPreview>
           <Reveal className="mt-10 flex justify-center">
             <Magnetic strength={0.3}>
               <Link

@@ -6,6 +6,7 @@ export function ProjectCard({ project }: { project: Project }) {
     <Link
       href={`/projets/${project.slug}`}
       data-cursor="Voir"
+      data-slug={project.slug}
       className="group flex flex-col gap-3 border-t border-foreground/10 py-8 transition-colors hover:border-accent/40 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
     >
       <div>

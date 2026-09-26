@@ -1,5 +1,11 @@
 export type ProjectKind = "Pro" | "Perso" | "École";
 
+export type Screenshot = {
+  src: string;
+  alt: string;
+  device: "desktop" | "mobile";
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -14,6 +20,7 @@ export type Project = {
   featured?: boolean;
   repoUrl?: string;
   demoUrl?: string;
+  screenshots?: Screenshot[];
 };
 
 export const projects: Project[] = [
@@ -111,6 +118,11 @@ export const projects: Project[] = [
     ],
     repoUrl: "https://github.com/AdamBellanger/OpenWhisper",
     demoUrl: "https://whisper.adambellanger.pro",
+    screenshots: [
+      { src: "/projects/openwhisper/desktop-1.webp", device: "desktop", alt: "Page d'accueil d'OpenWhisper : dépôt du fichier, choix de la langue et du modèle" },
+      { src: "/projects/openwhisper/desktop-2.webp", device: "desktop", alt: "Sélecteur de langue d'OpenWhisper ouvert" },
+      { src: "/projects/openwhisper/mobile.webp", device: "mobile", alt: "OpenWhisper sur mobile" },
+    ],
   },
   {
     slug: "polytrack",
@@ -133,6 +145,10 @@ export const projects: Project[] = [
       "Bot + API sous PM2, frontend en conteneur Docker",
     ],
     demoUrl: "https://polytrack.adambellanger.pro",
+    screenshots: [
+      { src: "/projects/polytrack/desktop-1.webp", device: "desktop", alt: "Page de connexion de PolyTrack" },
+      { src: "/projects/polytrack/mobile.webp", device: "mobile", alt: "PolyTrack sur mobile" },
+    ],
   },
   {
     slug: "docsdesk",
@@ -195,6 +211,11 @@ export const projects: Project[] = [
     highlights: ["Front + API TypeScript", "Un conteneur, un volume", "Health check intégré"],
     repoUrl: "https://github.com/AdamBellanger/Qrcode",
     demoUrl: "https://qrdrop.online",
+    screenshots: [
+      { src: "/projects/qrcode/desktop-2.webp", device: "desktop", alt: "QR Drop : QR code généré pour une URL, avec téléchargement et impression A4" },
+      { src: "/projects/qrcode/desktop-1.webp", device: "desktop", alt: "QR Drop : dépôt d'un fichier à partager" },
+      { src: "/projects/qrcode/mobile.webp", device: "mobile", alt: "QR Drop sur mobile" },
+    ],
   },
   {
     slug: "studio-landing-pages",
