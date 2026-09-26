@@ -13,10 +13,12 @@ export function Hero() {
           src={portrait}
           alt="Portrait d'Adam Bellanger"
           priority
+          draggable={false}
+          data-cursor-plain
           sizes="(min-width: 640px) 900px, 130vw"
           className="absolute bottom-0 left-1/2 h-[68vh] w-auto max-w-none -translate-x-1/2 select-none sm:h-[86vh] sm:max-h-[837px]"
         />
-        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background via-background/70 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-background via-background/70 to-transparent" />
 
         <Reveal delay={0.2} className="absolute left-0 top-[66%] z-10 -translate-y-1/2 sm:top-1/2">
           <LocationBadge />

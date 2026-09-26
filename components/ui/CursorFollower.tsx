@@ -2,21 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { alphaAt } from "@/lib/alpha-mask";
 
-type Mode = "default" | "link" | "label" | "text";
+type Mode = "default" | "link" | "label" | "text" | "plain";
 
 const SIZE: Record<Mode, string> = {
   default: "h-3 w-3 rounded-full",
   link: "h-12 w-12 rounded-full",
   label: "h-24 w-24 rounded-full",
   text: "h-7 w-[3px] rounded-sm",
+  plain: "h-9 w-9 rounded-full",
 };
 
 /**
  * Single contextual cursor. Inverts colours (mix-blend-difference) so it reads
  * on both dark and light sections; grows over links, shows a label over
  * elements carrying data-cursor="…", "↗" over external links, and becomes a
- * caret in text fields. Fine pointers only, off for reduced motion.
+ * caret in text fields. Over [data-cursor-plain] (photos, where inverted
+ * colours look wrong) it turns into a plain ring; on an <img> only its opaque
+ * pixels count. Fine pointers only, off for reduced motion.
  */
 export function CursorFollower() {
   const reducedMotion = useReducedMotion();
@@ -53,6 +57,13 @@ export function CursorFollower() {
       const target = e.target as Element;
       const labelled = target.closest<HTMLElement>("[data-cursor]");
       if (labelled) return update("label", labelled.dataset.cursor ?? "");
+      const plain = target.closest<HTMLElement>("[data-cursor-plain]");
+      if (
+        plain &&
+        (!(plain instanceof HTMLImageElement) || alphaAt(plain, e.clientX, e.clientY) > 64)
+      ) {
+        return update("plain");
+      }
       if (target.closest("input:not([type=hidden]), textarea")) return update("text");
       const anchor = target.closest("a");
       if (anchor?.target === "_blank") return update("label", "↗");
@@ -80,17 +91,18 @@ export function CursorFollower() {
 
   const isLabel = mode === "label";
   const isArrow = isLabel && label === "↗";
+  const isPlain = mode === "plain";
 
   return (
     <motion.div
       aria-hidden="true"
       style={{ x: springX, y: springY }}
-      className={`pointer-events-none fixed left-0 top-0 z-[100] ${isLabel ? "" : "mix-blend-difference"}`}
+      className={`pointer-events-none fixed left-0 top-0 z-[100] ${isLabel || isPlain ? "" : "mix-blend-difference"}`}
     >
       <div
-        className={`flex -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden transition-[width,height,border-radius,background-color,opacity,scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        className={`flex -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden transition-[width,height,border-radius,background-color,border-color,opacity,scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isArrow ? "h-16 w-16 rounded-full" : SIZE[mode]
-        } ${isLabel ? "bg-accent text-background" : "bg-foreground"} ${visible ? "opacity-100" : "opacity-0"} ${
+        } ${isLabel ? "bg-accent text-background" : isPlain ? "border-[1.5px] border-[#edede8] bg-white/10" : "bg-foreground"} ${visible ? "opacity-100" : "opacity-0"} ${
           pressed ? "scale-75" : "scale-100"
         }`}
       >
