@@ -8,7 +8,7 @@ export const site = {
   // Public Uptime Kuma status page. Leave statusSlug null until a status page
   // exists (Uptime Kuma → Status Pages → New); the footer indicator stays hidden.
   uptimeUrl: "https://uptime.adambellanger.pro",
-  statusSlug: null as string | null,
+  statusSlug: "infra" as string | null,
   socials: [
     { label: "GitHub", href: "https://github.com/AdamBellanger" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/adam-bellanger-652919386/" },
